@@ -29,7 +29,7 @@ AST* FatherAddSon(AST* pFather, AST* pSon) {
     }
 }
 
-AST* NewFatherAddSon(int iType, int num_of_sons, ...) {
+AST* NewFatherAddSon(statement_type iType, int num_of_sons, ...) {
     AST* pFather = NewNode();
     if (!pFather)
     {
