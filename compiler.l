@@ -53,16 +53,16 @@ EXP                        [eE][+-]?[0-9]+
 "while"					   { return WHILE; }
 "_Bool"					   { yylval.type = BOOL; return BOOL; }
 
-[1-9][0-9]*{INT_SUF}?             { sscanf(yytext, "%s", yylval.val); return INT_CONST; /* decimal */ }
-0[xX][a-fA-F0-9]+{INT_SUF}?       { sscanf(yytext, "%s", yylval.val); return INT_CONST; /* hexadecimal */ }
-0[0-7]*{INT_SUF}?                 { sscanf(yytext, "%s", yylval.val); return INT_CONST; /* octal */ }
+[1-9][0-9]*{INT_SUF}?             { yylval.val = NewNode(yytext); return INT_CONST; /* decimal */ }
+0[xX][a-fA-F0-9]+{INT_SUF}?       { yylval.val = NewNode(yytext); return INT_CONST; /* hexadecimal */ }
+0[0-7]*{INT_SUF}?                 { yylval.val = NewNode(yytext); return INT_CONST; /* octal */ }
 
-[0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { sscanf(yytext, "%s", yylval.val); return FLOAT_CONST; }
-[0-9]+[.]{EXP}?{FLOAT_SUF}?       { sscanf(yytext, "%s", yylval.val);; return FLOAT_CONST; }
-[0-9]+{EXP}{FLOAT_SUF}?           { sscanf(yytext, "%s", yylval.val); return FLOAT_CONST; }
+[0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { yylval.val = NewNode(yytext); return FLOAT_CONST; }
+[0-9]+[.]{EXP}?{FLOAT_SUF}?       { yylval.val = NewNode(yytext); return FLOAT_CONST; }
+[0-9]+{EXP}{FLOAT_SUF}?           { yylval.val = NewNode(yytext); return FLOAT_CONST; }
 
-[a-zA-Z_][0-9a-zA-Z_]*            { sscanf(yytext, "%s", yylval.val); return IDENTIFIER; }
-({STR_PRF}?\"[^"\\\n]*\")+        { sscanf(yytext, "%s", yylval.val); return STRING; }
+[a-zA-Z_][0-9a-zA-Z_]*            { yylval.val = NewNode(yytext); return IDENTIFIER; }
+({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val = NewNode(yytext); return STRING; }
 
 
 "+"                        { return ADD; }

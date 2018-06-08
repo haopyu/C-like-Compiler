@@ -1,16 +1,13 @@
 #include "AST.h"
-//include "yacc.hpp"
-extern FILE* yyin;
-
 
 void PrintTree(AST* tree) {
 
 }
 
-AST* NewNode() {
-    AST* pNew = new AST;
+AST* NewNode(char* text) {
+    AST* pNew = (AST*)malloc(sizeof(AST));
     if(!pNew) return pNew;
-    memset(pNew, 0, sizeof(*pNew));
+    pNew->text = strdup(text);
     return pNew;
 }
 
@@ -29,8 +26,8 @@ AST* FatherAddSon(AST* pFather, AST* pSon) {
     }
 }
 
-AST* NewFatherAddSon(statement_type iType, int num_of_sons, ...) {
-    AST* pFather = NewNode();
+AST* NewFatherAddSon(enum statement_type iType, int num_of_sons, ...) {
+    AST* pFather = NewNode(NULL);
     if (!pFather)
     {
         return pFather;
@@ -48,10 +45,10 @@ AST* NewFatherAddSon(statement_type iType, int num_of_sons, ...) {
     
     return pFather;
 }
-void FreeTree(AST* root) {
-    if (root->lpNext)  FreeTree(root->lpNext);
-    if (root->lpSub)   FreeTree(root->lpSub);
-    //real free
-    delete root;
-    root = NULL;
-}
+// void FreeTree(AST* root) {
+//     if (root->lpNext)  FreeTree(root->lpNext);
+//     if (root->lpSub)   FreeTree(root->lpSub);
+//     //real free
+//     free(root);
+//     root = NULL;
+// }

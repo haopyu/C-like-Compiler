@@ -1,15 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <fstream>
-#include <cstdlib>
-#include <cstdio>
-#include <cstdarg>
-
-using namespace std;
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 typedef struct abstract_syntax_tree AST;
 typedef struct symbol Symbol;
@@ -41,18 +35,18 @@ struct symbol {
 };
 
 struct abstract_syntax_tree {
-    statement_type type;
+    enum statement_type type;
     int symbol_type;
-    string text;
+    char* text;
     AST *lpNext;// 同一层
     AST *lpSub;// 子层节点
 };
 
 
 void PrintTree(AST* tree);
-AST* NewNode();
+AST* NewNode(char* text);
 AST* FatherAddSon(AST* pFather, AST* pSon);
-AST* NewFatherAddSon(statement_type iType, int num_of_sons, ...);
-void FreeTree(AST* root);
+AST* NewFatherAddSon(enum statement_type iType, int num_of_sons, ...);
+// void FreeTree(AST* root);
 void nm_clear();
 
