@@ -52,7 +52,7 @@ struct abstract_syntax_tree {
 void PrintTree(AST* tree);
 AST* NewNode();
 AST* FatherAddSon(AST* pFather, AST* pSon);
-AST* NewFatherAddSon(int iType, int num_of_sons, ...);
+AST* NewFatherAddSon(statement_type iType, int num_of_sons, ...);
 void FreeTree(AST* root);
 void nm_clear();
 
