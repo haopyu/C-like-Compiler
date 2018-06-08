@@ -1,4 +1,5 @@
 %{
+	#include "AST.h"
     #include "compiler.tab.h"
     extern yyerror(const char *s); 
     int yywrap(void);  

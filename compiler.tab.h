@@ -139,7 +139,7 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 7 "compiler.y" /* yacc.c:1909  */
- AST *val; int type; 
+ AST* val; int type; 
 
 #line 145 "compiler.tab.h" /* yacc.c:1909  */
 };

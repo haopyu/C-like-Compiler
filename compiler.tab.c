@@ -197,7 +197,7 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 7 "compiler.y" /* yacc.c:355  */
- AST *val; int type; 
+ AST* val; int type; 
 
 #line 203 "compiler.tab.c" /* yacc.c:355  */
 };
