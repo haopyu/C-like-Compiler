@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "symbol_table.h"
 
 typedef struct abstract_syntax_tree AST;
-typedef struct symbol Symbol;
 
 enum statement_type {
     LIST,
@@ -29,14 +29,9 @@ enum statement_type {
 	FOR_STATEMENT
 };
 
-struct symbol {
-    char *name;
-	int type, pointer;
-};
-
 struct abstract_syntax_tree {
     enum statement_type type;
-    int symbol_type;
+    Symbol* symbol = NULLs;
     char* text;
     AST *lpNext;// 同一层
     AST *lpSub;// 子层节点
