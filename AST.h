@@ -41,7 +41,8 @@ struct symbol {
 };
 
 struct abstract_syntax_tree {
-    int type;
+    statement_type type;
+    int symbol_type;
     string text;
     AST *lpNext;// 同一层
     AST *lpSub;// 子层节点
