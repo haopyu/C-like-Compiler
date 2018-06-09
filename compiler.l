@@ -1,4 +1,5 @@
 %{
+	#include "AST.h"
     #include "compiler.tab.h"
     extern yyerror(const char *s); 
     int yywrap(void);  
@@ -64,7 +65,7 @@ EXP                        [eE][+-]?[0-9]+
 [a-zA-Z_][0-9a-zA-Z_]*            { yylval.val = NewNode(yytext); return IDENTIFIER; }
 ({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val = NewNode(yytext); return STRING; }
 
-
+"..."					   ATOMIC{ return ELLIPSIS; }
 "+"                        { return ADD; }
 "-"                        { return SUB; }
 "*"                        { return MUL; }
@@ -99,8 +100,8 @@ EXP                        [eE][+-]?[0-9]+
 ","					       { return COMMA; }
 ":"					       { return COLON; }
 "="					       { return ASSIGN; }
-("["|"<:")				   { return LBRACKET; }
-("]"|":>")				   { return RBRACKET; }
+"["|"<:"				   { return LBRACKET; }
+"]"|":>"				   { return RBRACKET; }
 "."				       	   { return DOT; }
 "&"					       { return BIT_AND; }
 "!"					       { return NOT; }
