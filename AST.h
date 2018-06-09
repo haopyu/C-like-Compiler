@@ -186,13 +186,13 @@ const String labels[] = {
 
 union _value_union {
 	int i;
-	int f;
+	float f;
 	String s;
 };
 
 struct _value {
 	value_union v;
-	String use;
+	String type;
 };
 
 struct abstract_syntax_tree {
