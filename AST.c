@@ -1,9 +1,14 @@
 #include "AST.h"
 
-AST* make_node(value val, int _case, int num_of_sons, ...) {
+AST* make_node(value *val, int _case, int num_of_sons, ...) {
     AST *tree;
     tree = (AST*)malloc(sizeof(AST));
-    tree->val = val;
+    tree->val = (value*)malloc(sizeof(value));
+    if(val != NULL) {
+        tree->val->type = val->type;
+        tree->val->v = val->v;
+    } else tree->val = NULL;
+
     tree->node_identifier = _case;
 
     va_list ap;
@@ -18,14 +23,14 @@ AST* make_node(value val, int _case, int num_of_sons, ...) {
 
 void print_tree(AST* tree) {
 	if(tree == NULL) return; 
-	if(!strcmp(tree->val.type,"string"))
-		printf("Value: %s ",tree->val.v.s);
-	if(!strcmp(tree->val.type,"identifier"))
-		printf("Value: %s ",tree->val.v.s);
-	else if(!strcmp(tree->val.type,"float"))
-		printf("Value: %f ",tree->val.v.f);
-	else if(!strcmp(tree->val.type,"integer"))
-		printf("Value: %d ",tree->val.v.i);
+	if(!strcmp(tree->val->type,"string"))
+		printf("Value: %s ",tree->val->v.s);
+	if(!strcmp(tree->val->type,"identifier"))
+		printf("Value: %s ",tree->val->v.s);
+	else if(!strcmp(tree->val->type,"float"))
+		printf("Value: %f ",tree->val->v.f);
+	else if(!strcmp(tree->val->type,"integer"))
+		printf("Value: %d ",tree->val->v.i);
 	else 
 		printf("Value: ");
 
@@ -45,8 +50,8 @@ void print_tree(AST* tree) {
 
 int find_usage(AST* p, String _type[100], int i, String u) {
 	if(p == NULL) return i;
-	if(!strcmp(p->val.type,u)) {
-		strcpy(_type[i],p->val.v.s);
+	if(!strcmp(p->val->type,u)) {
+		strcpy(_type[i],p->val->v.s);
 		i++;
 	}
     int index = 0;

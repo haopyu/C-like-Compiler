@@ -22,6 +22,33 @@
 #define NULL 0
 #endif
 
+
+typedef struct abstract_syntax_tree AST;
+typedef union _value_union value_union;
+typedef struct _value value;
+typedef char* String;
+
+union _value_union {
+	int i;
+	float f;
+	String s;
+};
+
+struct _value {
+	value_union v;
+	String type;
+};
+
+struct abstract_syntax_tree {
+	value *val;
+	int node_identifier;
+	AST* children[4];
+};
+
+AST* make_node(value *val, int _case, int num_of_sons, ...);
+void print_tree(AST *tree);
+int find_usage(AST *p, String _type[100], int i, String u);
+
 enum ParseTreeNodeType {
 	UNARY_OPERATOR,
 	UNARY_EXPRESSION,
@@ -100,12 +127,6 @@ enum ParseTreeNodeType {
 	ADDITIVE_EXPRESSION,
 	ABSTRACT_DECLARATOR
 };
-
-typedef struct abstract_syntax_tree AST;
-typedef union _value_union value_union;
-typedef struct _value value;
-typedef char* String;
-
 const String labels[] = {
 	"UNARY_OPERATOR",
 	"UNARY_EXPRESSION",
@@ -184,24 +205,3 @@ const String labels[] = {
 	"ADDITIVE_EXPRESSION",
 	"ABSTRACT_DECLARATOR"
 };
-
-union _value_union {
-	int i;
-	float f;
-	String s;
-};
-
-struct _value {
-	value_union v;
-	String type;
-};
-
-struct abstract_syntax_tree {
-	value val;
-	int node_identifier;
-	AST* children[4];
-};
-
-AST* make_node(value val, int _case, int num_of_sons, ...);
-void print_tree(AST *tree);
-int find_usage(AST *p, String _type[100], int i, String u);
