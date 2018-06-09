@@ -1,7 +1,7 @@
 #include "symbol_table.h"
 
 //test symbol table
-
+/*
 int main()
 {
 	SymTabPtr table_ptr = init_symtable();
@@ -56,7 +56,7 @@ int main()
 	add_func_to_seg(table_ptr, "func1", name_list, 3);
 	print_table(table_ptr);
 }
-
+*/
 SymTabPtr init_symtable()
 {
 	SymTabPtr table_ptr = (SymTabPtr)malloc(sizeof(struct symbol_table));
