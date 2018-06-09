@@ -4,7 +4,7 @@
     extern int yylex(void);
 %}
 
-%union { AST *val; int type; }
+%union { AST* val; int type; }
 
 %token	CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO 
 %token  CONTINUE BREAK RETURN SIZEOF
