@@ -10,6 +10,8 @@
 
 INT_SUF                    (((u|U)(l|L|ll|LL)?)|((l|L|ll|LL)(u|U)?))
 FLOAT_SUF                  (f|F|l|L)
+CHA_PRF                    (u8|u|U|L)
+ES                         (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
 STR_PRF                    (u8|u|U|L)
 EXP                        [eE][+-]?[0-9]+ 
 
@@ -57,6 +59,7 @@ EXP                        [eE][+-]?[0-9]+
 [1-9][0-9]*{INT_SUF}?             { yylval.val = NewNode(yytext); return INT_CONST; /* decimal */ }
 0[xX][a-fA-F0-9]+{INT_SUF}?       { yylval.val = NewNode(yytext); return INT_CONST; /* hexadecimal */ }
 0[0-7]*{INT_SUF}?                 { yylval.val = NewNode(yytext); return INT_CONST; /* octal */ }
+{CHA_PRF}?"'"([^'\\\n]|{ES})+"'"  { yylval.val = NewNode(yytext); return INT_CONST; /* char */ }
 
 [0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { yylval.val = NewNode(yytext); return FLOAT_CONST; }
 [0-9]+[.]{EXP}?{FLOAT_SUF}?       { yylval.val = NewNode(yytext); return FLOAT_CONST; }
@@ -70,7 +73,7 @@ EXP                        [eE][+-]?[0-9]+
 "-"                        { return SUB; }
 "*"                        { return MUL; }
 "/"                        { return DIV; }
-"^"                        { return POWER; }
+"^"                        { return BIT_XOR; }
 "("                        { return LPAREN; }
 ")"                        { return RPAREN; }
 ";"                        { return SEMICOLON;}

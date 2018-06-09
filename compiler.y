@@ -2,6 +2,9 @@
     #include "AST.h"
     yyerror(const char *s);  
     extern int yylex(void);
+
+    AST *root = NewNode("Head");
+    root->type = PROGRAM;
 %}
 
 %union { AST* val; int type; }
@@ -18,6 +21,7 @@
 %token  SHIFT_LEFT_ASSIGN SHIFT_RIGHT_ASSIGN AND_ASSIGN 
 %token  MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN
 %token	XOR_ASSIGN OR_ASSIGN
+%token  TYPEDEF_NAME
 
 %token	TYPEDEF EXTERN STATIC AUTO REGISTER INLINE
 %token	CONST RESTRICT VOLATILE
@@ -55,13 +59,13 @@ constant
 // external definitions
 
 translation_unit
-    : external_declaration
-    | translation_unit external_declaration
+    : external_declaration 
+    | translation_unit external_declaration { $$ = FatherAddSon(root, $2); }
     ;
 
 external_declaration
 	: function_definition
-	| declaration
+	| declaration { /* add declaration to sym_tab */ }
     ;
 
 function_definition
@@ -123,6 +127,7 @@ type_specifier
     | BOOL
     | struct_or_union_specifier
     | enum_specifier
+    | TYPEDEF_NAME
     ;
 
 struct_or_union_specifier
