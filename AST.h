@@ -8,6 +8,7 @@
 #define SYM_TAB_SIZE	997
 #define IDENTIFY_LEN	15
 #define IND_OFFSET		2
+#define CHILDREN_NUM	4
 
 #ifndef TRUE
 #define TRUE 1
@@ -202,5 +203,5 @@ struct abstract_syntax_tree {
 };
 
 AST* make_node(value val, int _case, int num_of_sons, ...);
-void print_tree(AST* tree);
-int find_usage(AST* p, String _type[100], int i, String u);
+void print_tree(AST *tree);
+int find_usage(AST *p, String _type[100], int i, String u);
