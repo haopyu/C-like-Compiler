@@ -13,7 +13,7 @@ A C-like Compiler
 
 ## Build
 >$>make  
->$>.\QAQ
+>$>.\QAQ \<filename\>
 ## TODO
 * IR Optimization
 * Code Generation
