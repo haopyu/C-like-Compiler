@@ -12,8 +12,8 @@ A C-like Compiler
 * Byacc(Yacc) 1.9
 
 ## Build
->$>make
-
+>$>make  
+>$>.\QAQ
 ## TODO
 * IR Optimization
 * Code Generation
