@@ -56,17 +56,17 @@ EXP                        [eE][+-]?[0-9]+
 "while"					   { return WHILE; }
 "_Bool"					   { yylval.type = BOOL; return BOOL; }
 
-[1-9][0-9]*{INT_SUF}?             { yylval.val = NewNode(yytext); return INT_CONST; /* decimal */ }
-0[xX][a-fA-F0-9]+{INT_SUF}?       { yylval.val = NewNode(yytext); return INT_CONST; /* hexadecimal */ }
-0[0-7]*{INT_SUF}?                 { yylval.val = NewNode(yytext); return INT_CONST; /* octal */ }
-{CHA_PRF}?"'"([^'\\\n]|{ES})+"'"  { yylval.val = NewNode(yytext); return INT_CONST; /* char */ }
+[1-9][0-9]*{INT_SUF}?             { yylval.val_int = atoi(yytext); return INT_CONST; /* decimal */ }
+0[xX][a-fA-F0-9]+{INT_SUF}?       { yylval.val_int = atoi(yytext); return INT_CONST; /* hexadecimal */ }
+0[0-7]*{INT_SUF}?                 { yylval.val_int = atoi(yytext); return INT_CONST; /* octal */ }
+{CHA_PRF}?"'"([^'\\\n]|{ES})+"'"  { yylval.val_int = atoi(yytext); return INT_CONST; /* char */ }
 
-[0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { yylval.val = NewNode(yytext); return FLOAT_CONST; }
-[0-9]+[.]{EXP}?{FLOAT_SUF}?       { yylval.val = NewNode(yytext); return FLOAT_CONST; }
-[0-9]+{EXP}{FLOAT_SUF}?           { yylval.val = NewNode(yytext); return FLOAT_CONST; }
+[0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { yylval.val_float = atof(yytext); return FLOAT_CONST; }
+[0-9]+[.]{EXP}?{FLOAT_SUF}?       { yylval.val_float = atof(yytext); return FLOAT_CONST; }
+[0-9]+{EXP}{FLOAT_SUF}?           { yylval.val_float = atof(yytext); return FLOAT_CONST; }
 
-[a-zA-Z_][0-9a-zA-Z_]*            { yylval.val = NewNode(yytext); return IDENTIFIER; }
-({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val = NewNode(yytext); return STRING; }
+[a-zA-Z_][0-9a-zA-Z_]*            { yylval.val_str = strdup(yytext); return IDENTIFIER; }
+({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val_str = strdup(yytext); return STRING; }
 
 "..."					   ATOMIC{ return ELLIPSIS; }
 "+"                        { return ADD; }
