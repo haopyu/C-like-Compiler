@@ -41,6 +41,7 @@
 %left MUL DIV
 %right NOT NEGATION
 %left LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET DOT PTR
+%right ELSE
 
 %start translation_unit
 
