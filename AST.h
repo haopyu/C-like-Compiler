@@ -198,12 +198,9 @@ struct _value {
 struct abstract_syntax_tree {
 	value val;
 	int node_identifier;
-	AST* first;
-	AST* second;
-	AST* third;
-	AST* fourth;
+	AST* children[4];
 };
 
-AST* make_node(value val, int _case, ...);
+AST* make_node(value val, int _case, int num_of_sons, ...);
 void print_tree(AST* tree);
 int find_usage(AST* p, String _type[100], int i, String u);

@@ -3,6 +3,7 @@
 AST* make_node(value val, int _case, ...) {
 
 }
+
 void print_tree(AST* tree) {
 	if(tree == NULL)
 		return; 
@@ -19,14 +20,15 @@ void print_tree(AST* tree) {
 
 	printf("Label: %s\n",labels[(tree->node_identifier)]);
 	//if(tree->first!=NULL) printf("Going from %s to %s\n",labels[tree->nodeIdentifier],labels[tree->firstree->nodeIdentifier]);
-	print_tree(tree->first);
+	print_tree(tree->children[0]);
 	//if(tree->second!=NULL) printf("Going from %s to %s\n",labels[tree->nodeIdentifier],labels[tree->second->nodeIdentifier]);
-	print_tree(tree->second);
+	print_tree(tree->children[1]);
 	//if(tree->third!=NULL) printf("Going from %s to %s\n",labels[tree->nodeIdentifier],labels[tree->third->nodeIdentifier]);
-	print_tree(tree->third);
+	print_tree(tree->children[2]);
 	//if(tree->fourth!=NULL) printf("Going from %s to %s\n",labels[tree->nodeIdentifier],labels[tree->fourth->nodeIdentifier]);
-	print_tree(tree->fourth);
+	print_tree(tree->children[3]);
 }
+
 int find_usage(AST* p, String _type[100], int i, String u) {
 	if(p == NULL)
 		return i;
