@@ -596,66 +596,149 @@ direct_abstract_declarator
 	;
 
 initializer
-    : assignment_expression 
-    | LBRACE initializer_list RBRACE
-    | LBRACE initializer_list COMMA RBRACE
+    : assignment_expression {
+        $$ = make_node(NULL, INITIALIZER, 1, $1);
+    }
+    | LBRACE initializer_list RBRACE {
+        $$ = make_node(NULL, INITIALIZER, 1, $2);
+    }
+    | LBRACE initializer_list COMMA RBRACE {
+        $$ = make_node(NULL, INITIALIZER, 1, $2);
+    }
     ;
 
 initializer_list
-    : designation initializer
-    | initializer
-    | initializer_list COMMA designation initializer
-    | initializer_list COMMA initializer
+    : designation initializer {
+        $$ = make_node(NULL, INITIALIZER_LIST, 2, $1, $2);
+    }
+    | initializer {
+        $$ = make_node(NULL, INITIALIZER_LIST, 1, $1);
+    }
+    | initializer_list COMMA designation initializer {
+        $$ = make_node(NULL, INITIALIZER_LIST, 3, $1, $3, $4);
+    }
+    | initializer_list COMMA initializer {
+        $$ = make_node(NULL, INITIALIZER_LIST, 2, $1, $3);
+    }
     ;
 
 designation
-    : designator_list ASSIGN
+    : designator_list ASSIGN {
+        $$ = make_node(NULL, DESIGNATION, 1, $1);
+    }
     ;
 
 designator_list
-    : designator
-    | declaration_list designator
+    : designator {
+        $$ = make_node(NULL, DESIGNATOR_LIST, 1, $1);
+    }
+    | declaration_list designator {
+        $$ = make_node(NULL, DESIGNATOR_LIST, 2, $1, $2);
+    }
     ;
 
 designator
-    : LBRACKET constant_expression RBRACKET
-    | DOT IDENTIFIER
+    : LBRACKET constant_expression RBRACKET {
+        $$ = make_node(NULL, DESIGNATOR, 1, $2);
+    }
+    | DOT IDENTIFIER {
+        value v;
+        v.v.s = $2;
+        v.type = "identifier";
+        $$ = make_node(&v, DESIGNATOR, 0);
+    }
     ;
 
 // expressions
 
 primary_expression
-    : IDENTIFIER
-    | constant
-    | STRING
-    | LPAREN expression RPAREN
+    : IDENTIFIER {
+        value v;
+        v.v.s = $1;
+        v.type = "identifier";
+        $$ = make_node(&v, PRIMARY_EXPRESSION, 0);
+    }
+    | constant {
+        $$ = make_node(NULL, PRIMARY_EXPRESSION, 1, $1);
+    }
+    | STRING {
+        value v;
+        v.v.s = $1;
+        v.type = "string";
+        $$ = make_node(&v, PRIMARY_EXPRESSION, 0);
+    }
+    | LPAREN expression RPAREN {
+        $$ = make_node(NULL, PRIMARY_EXPRESSION, 1, $2);
+    }
     ;
 
 postfix_expression
-    : primary_expression
-    | postfix_expression LBRACKET expression RBRACKET
-    | postfix_expression LPAREN RPAREN
-    | postfix_expression LPAREN argument_expression_list RPAREN
-    | postfix_expression DOT IDENTIFIER
-    | postfix_expression PTR IDENTIFIER
-    | postfix_expression INC
-    | postfix_expression DEC
-    | LPAREN type_name RPAREN LBRACE initializer_list RBRACE
-	| LPAREN type_name RPAREN LBRACE initializer_list COMMA RBRACE
+    : primary_expression {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 1, $1);
+    }
+    | postfix_expression LBRACKET expression RBRACKET {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 2, $1, $3);
+    }
+    | postfix_expression LPAREN RPAREN {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 1, $1);
+    }
+    | postfix_expression LPAREN argument_expression_list RPAREN {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 2, $1, $3);
+    }
+    | postfix_expression DOT IDENTIFIER {
+        value v;
+        v.v.s = $1;
+        v.type = "identifier";
+        $$ = make_node(&v, POSTFIX_EXPRESSION, 1, $1);
+    }
+    | postfix_expression PTR IDENTIFIER {
+        value v;
+        v.v.s = $1;
+        v.type = "identifier";
+        $$ = make_node(&v, POSTFIX_EXPRESSION, 1, $1);
+    }
+    | postfix_expression INC {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 1, $1);
+    }
+    | postfix_expression DEC {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 1, $1);
+    }
+    | LPAREN type_name RPAREN LBRACE initializer_list RBRACE {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 2, $2, $5);
+    }
+	| LPAREN type_name RPAREN LBRACE initializer_list COMMA RBRACE {
+        $$ = make_node(NULL, POSTFIX_EXPRESSION, 2, $2, $5);
+    }
     ;
 
 argument_expression_list
-    : assignment_expression
-    | argument_expression_list COMMA assignment_expression
+    : assignment_expression {
+        $$ = make_node(NULL, ARGUMENT_EXPRESSION_LIST, 1, $1);
+    }
+    | argument_expression_list COMMA assignment_expression {
+        $$ = make_node(NULL, ARGUMENT_EXPRESSION_LIST, 2, $1, $3);
+    }
     ;
 
 unary_expression
-    : postfix_expression
-    | INC unary_expression
-    | DEC unary_expression
-    | unary_operator cast_expression
-    | SIZEOF unary_expression
-    | SIZEOF LPAREN type_name RPAREN
+    : postfix_expression {
+        $$ = make_node(NULL, UNARY_EXPRESSION, 1, $1);
+    }
+    | INC unary_expression {
+        $$ = make_node(NULL, UNARY_EXPRESSION, 1, $2);
+    }
+    | DEC unary_expression {
+        $$ = make_node(NULL, UNARY_EXPRESSION, 1, $2);
+    }
+    | unary_operator cast_expression {
+        $$ = make_node(NULL, UNARY_EXPRESSION, 2, $1, $2);
+    }
+    | SIZEOF unary_expression {
+        $$ = make_node(NULL, UNARY_EXPRESSION, 1, $2);
+    }
+    | SIZEOF LPAREN type_name RPAREN {
+        $$ = make_node(NULL, UNARY_EXPRESSION, 1, $3);
+    }
     ;
 
 unary_operator
@@ -668,7 +751,9 @@ unary_operator
     ;
 
 cast_expression
-    : unary_expression
+    : unary_expression {
+        
+    }
     | LPAREN type_name RPAREN cast_expression
     ;
 
