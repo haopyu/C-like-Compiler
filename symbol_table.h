@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define SEGSYMBOLTABLESIZE 200
 #define SEGMENTNUMBER 100
 #define FUNCTIONNUMBER 100
@@ -73,6 +74,8 @@ int check_func(SymTabPtr table_ptr, char *name, char *return_type, char **para_t
 
 int add_func_to_seg(SymTabPtr table_ptr, char *name, char **para_name_list, int para_num);
 
+//if the variable is TYPEDEF_NAME, return 1 else return 0
+int symbol_type(char * name);
 
 void print_table(SymTabPtr table_ptr);
 

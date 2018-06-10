@@ -234,6 +234,10 @@ int check_func(SymTabPtr table_ptr, char *name, char *return_type, char **para_t
 		return 0;
 }
 
+int symbol_type(char * name) {
+	return 0;
+}
+
 int add_func_to_seg(SymTabPtr table_ptr, char *name, char **para_name_list, int para_num)
 {
 	FuncDecla *fd_table = table_ptr->func_decla_table;

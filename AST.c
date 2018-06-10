@@ -102,6 +102,11 @@ AST* make_node(value *val, int _case, int num_of_sons, ...) {
 }
 
 void print_tree(AST* tree) {
+	int i;
+	// static int depth = 0;
+	// for (i = 0; i < depth; i+=2) {
+	// 	printf ("-");
+	// }
 	if(tree == NULL) return; 
 	if(tree->val != NULL) {
 		if(!strcmp(tree->val->type,"string"))
@@ -116,9 +121,12 @@ void print_tree(AST* tree) {
 			printf("Value: ");
 	}
 	printf("Label: %s\n",slabels[(tree->node_identifier)]);
-    int i = 0;
-    for (i = 0; i < CHILDREN_NUM; i++)
-        print_tree(tree->children[i]);
+    i = 0;
+	// depth++;
+    for (i = 0; i < CHILDREN_NUM; i++) {
+		print_tree(tree->children[i]);
+	}
+	// depth--;   
 }
 
 int find_usage(AST* p, String _type[100], int i, String u) {

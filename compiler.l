@@ -1,9 +1,13 @@
 %{
 	#include "AST.h"
+	#include "symbol_table.h"
     #include "compiler.tab.h"
-    extern yyerror(const char *s); 
+    extern int yyerror(const char *s); 
     int yywrap(void);  
     int yylex(void);
+	void annotation();
+	extern int symbol_type(char *name);
+	int check_type();
 %}
 
 %option yylineno
@@ -65,7 +69,7 @@ EXP                        [eE][+-]?[0-9]+
 [0-9]+[.]{EXP}?{FLOAT_SUF}?       { yylval.val_float = atof(yytext); return FLOAT_CONST; }
 [0-9]+{EXP}{FLOAT_SUF}?           { yylval.val_float = atof(yytext); return FLOAT_CONST; }
 
-[a-zA-Z_][0-9a-zA-Z_]*            { yylval.val_str = strdup(yytext); return IDENTIFIER; }
+[a-zA-Z_][0-9a-zA-Z_]*            { yylval.val_str = strdup(yytext); return check_type(); }
 ({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val_str = strdup(yytext); return STRING; }
 
 "..."					   { return ELLIPSIS; }
@@ -133,4 +137,13 @@ void annotation() {
 		}
 	}
 	yyerror("Unclosed annotation!\n");
+}
+
+int check_type() {
+	if (symbol_type(yytext)) {
+		return TYPEDEF_NAME;
+	}
+	else {
+		return IDENTIFIER;
+	}
 }

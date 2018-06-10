@@ -1,8 +1,10 @@
 %{
     #include "AST.h"
     #include "IR.h"
-    yyerror(const char *s);  
+    int yyerror(const char *s);  
     extern int yylex(void);
+    extern int yylineno;
+    extern char *yytext;
     AST *root;
 %}
 
@@ -329,6 +331,9 @@ struct_declaration_list
 struct_declaration
     : specifier_qualifier_list struct_declarator_list SEMICOLON {
         $$ = make_node(NULL, STRUCT_DECLARATION, 2, $1, $2);
+    }
+    | error SEMICOLON {
+        
     }
     ;
 
@@ -1145,7 +1150,12 @@ expression_statement
     : expression SEMICOLON {
         $$ = make_node(NULL,EXPRESSION_STATEMENT, 1, $1);
     }
-    | SEMICOLON
+    | SEMICOLON {
+        $$ = NULL;
+    }
+    | error SEMICOLON {
+
+    }
     ;
  
 selection_statement
@@ -1182,6 +1192,9 @@ iteration_statement
     | FOR LPAREN expression_statement expression_statement expression RPAREN statement {
         $$ = make_node(NULL, ITERATION_STATEMENT, 4, $3, $4, $5, $7);
     }
+    | error RPAREN {
+
+    }
     ;
 
 jump_statement
@@ -1205,30 +1218,27 @@ jump_statement
     }
     ;
 
-
 %%
 
 int main(int argc, char *argv[])
 {
     extern FILE *yyin, *yyout;
-    char output[256];
+    // char output[256];
     yyin = fopen(argv[1], "r");
-    sscanf(argv[1], "%s", output);
-    strcat(output, ".out");
-    yyout = fopen(output, "w");
+    // sscanf(argv[1], "%s", output);
+    // strcat(output, ".out");
+    // yyout = fopen(output, "w");
     printf("parsing...\n");
     yyparse();   
     printf("parsing done.\n");
     translate(root);
     fclose(yyin);
-    fclose(yyout);
+    // fclose(yyout);
     return 0;
 }
 
-yyerror(const char *s)
+int yyerror(const char *s)
 {
-    // fflush(stdout);
-	// fprintf(stderr, "\033[1m\033[31m");
-	// fprintf(stderr, "*** %d: %s near '%s'\n", yylineno, s, yytext);
-	// fprintf(stderr, "\033[0m");
+    fflush(stdout);
+	fprintf(stderr, "*** %d: %s near '%s'\n", yylineno, s, yytext);
 }
