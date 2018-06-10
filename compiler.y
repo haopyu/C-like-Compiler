@@ -766,59 +766,119 @@ constant_expression
 // statements
 
 statement
-    : compound_statement
-    | expression_statement
-    | selection_statement
-    | iteration_statement
-    | jump_statement
-    | labeled_statement
+    : compound_statement {
+        $$ = make_node(NULL, STATEMENT, 1, $1);
+    }
+    | expression_statement {
+        $$ = make_node(NULL, STATEMENT, 1, $1);
+    }
+    | selection_statement {
+        $$ = make_node(NULL, STATEMENT, 1, $1);
+    }
+    | iteration_statement {
+        $$ = make_node(NULL, STATEMENT, 1, $1);
+    }
+    | jump_statement {
+        $$ = make_node(NULL, STATEMENT, 1, $1);
+    }
+    | labeled_statement {
+        $$ = make_node(NULL, STATEMENT, 1, $1);
+    }
     ;   
 
 labeled_statement
-    : IDENTIFIER COLON statement
-    | CASE constant_expression COLON statement
-    | DEFAULT COLON statement
+    : IDENTIFIER COLON statement {
+        value v;
+        v.v.s = $1;
+        v.type = "identifier";
+        $$ = make_node(&v, LABELED_STATEMENT, 1, $3);
+    }
+    | CASE constant_expression COLON statement {
+        $$ = make_node(NULL, LABELED_STATEMENT, 2, $2, $4);
+    }
+    | DEFAULT COLON statement {
+        $$ = make_node(NULL, LABELED_STATEMENT, 1, $3);
+    }
     ;
 
 compound_statement
     : LBRACE RBRACE
-    | LBRACE block_item_list RBRACE
+    | LBRACE block_item_list RBRACE {
+        $$ = make_node(NULL, COMPOUND_STATEMENT, 1, $2);
+    }
     ;
 
 block_item_list
-    : block_item
-    | block_item_list block_item
+    : block_item {
+        $$ = make_node(NULL, BLOCK_ITEM_LIST, 1, $1);
+    }
+    | block_item_list block_item {
+        $$ = make_node(NULL, BLOCK_ITEM_LIST, 2, $1, $2);
+    }
     ;
 
 block_item
-    : declaration
-    | statement
+    : declaration {
+        $$ = make_node(NULL, BLOCK_ITEM, 1, $1);
+    } 
+    | statement {
+        $$ = make_node(NULL, BLOCK_ITEM, 1, $1);
+    }
     ;
 
 expression_statement
-    : expression SEMICOLON
+    : expression SEMICOLON {
+        $$ = make_node(NULL,EXPRESSION_STATEMENT, 1, $1);
+    }
     | SEMICOLON
     ;
  
 selection_statement
-    : IF LPAREN expression RPAREN statement
-    | IF LPAREN expression RPAREN statement ELSE statement
-    | SWITCH LPAREN expression RPAREN statement
+    : IF LPAREN expression RPAREN statement {
+        $$ = make_node(NULL, SELECTION_STATEMENT, 2, $3, $5);
+    }
+    | IF LPAREN expression RPAREN statement ELSE statement {
+        $$ = make_node(NULL, SELECTION_STATEMENT, 3, $3, $5, $7);
+    }
+    | SWITCH LPAREN expression RPAREN statement {
+        $$ = make_node(NULL, SELECTION_STATEMENT, 2, $3, $5);
+    }
     ;
 
 iteration_statement
-    : WHILE LPAREN expression RPAREN statement
-    | DO statement WHILE LPAREN expression RPAREN
-    | FOR LPAREN expression_statement expression_statement RPAREN statement
-    | FOR LPAREN expression_statement expression_statement expression RPAREN statement
+    : WHILE LPAREN expression RPAREN statement {
+        $$ = make_node(NULL, ITERATION_STATEMENT, 2, $3, $5);
+    }
+    | DO statement WHILE LPAREN expression RPAREN {
+        $$ = make_node(NULL, ITERATION_STATEMENT, 2, $2, $5);
+    }
+    | FOR LPAREN expression_statement expression_statement RPAREN statement {
+        $$ = make_node(NULL, ITERATION_STATEMENT, 3, $3, $4, $6);
+    }
+    | FOR LPAREN expression_statement expression_statement expression RPAREN statement {
+        $$ = make_node(NULL, ITERATION_STATEMENT, 4, $3, $4, $5, $7);
+    }
     ;
 
 jump_statement
-    : CONTINUE SEMICOLON
-    | BREAK SEMICOLON
-    | RETURN SEMICOLON
-    | RETURN expression SEMICOLON
-    | GOTO IDENTIFIER SEMICOLON
+    : CONTINUE SEMICOLON {
+        $$ = make_node(NULL, JUMP_STATEMENT, 0);
+    }
+    | BREAK SEMICOLON {
+        $$ = make_node(NULL, JUMP_STATEMENT, 0);
+    }
+    | RETURN SEMICOLON {
+        $$ = make_node(NULL, JUMP_STATEMENT, 0);
+    }
+    | RETURN expression SEMICOLON {
+        $$ = make_node(NULL, JUMP_STATEMENT, 1, $2);
+    }
+    | GOTO IDENTIFIER SEMICOLON {
+        value v;
+        v.v.s = $2;
+        v.type = "identifier";
+        $$ = make_node(&v, JUMP_STATEMENT, 0);
+    }
     ;
 
 
