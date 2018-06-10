@@ -9,11 +9,14 @@ AST* make_node(value *val, int _case, int num_of_sons, ...) {
         tree->val->v = val->v;
     } else tree->val = NULL;
 
-    tree->node_identifier = _case;
+	int i = 0;
+    for(; i < CHILDREN_NUM; i++)
+		tree->children[i] = NULL;
+	tree->node_identifier = _case;
 
     va_list ap;
     va_start(ap, num_of_sons);
-    int i = 0;
+    i = 0;
     while(num_of_sons--)
         tree->children[i++] = va_arg(ap, AST*);
     va_end(ap);
