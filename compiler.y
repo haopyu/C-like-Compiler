@@ -811,13 +811,22 @@ multiplicative_expression
         $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 1, $1);
     }
     | multiplicative_expression MUL cast_expression {
-        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "*";
+        v.type = "string";
+        $$ = make_node(&v, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
     }
     | multiplicative_expression DIV cast_expression {
-        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "/";
+        v.type = "string";
+        $$ = make_node(&v, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
     }
     | multiplicative_expression MOD cast_expression {
-        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "%";
+        v.type = "string";
+        $$ = make_node(&v, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -826,10 +835,16 @@ additive_expression
         $$ = make_node(NULL, ADDITIVE_EXPRESSION, 1, $1);
     }
     | additive_expression ADD multiplicative_expression {
-        $$ = make_node(NULL, ADDITIVE_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "+";
+        v.type = "string";
+        $$ = make_node(&v, ADDITIVE_EXPRESSION, 2, $1, $3);
     }
     | additive_expression SUB multiplicative_expression {
-        $$ = make_node(NULL, ADDITIVE_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "-";
+        v.type = "string";
+        $$ = make_node(&v, ADDITIVE_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -838,10 +853,16 @@ shift_expression
         $$ = make_node(NULL, SHIFT_EXPRESSION, 1, $1);
     }
     | shift_expression SHIFT_LEFT additive_expression {
-        $$ = make_node(NULL, SHIFT_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "<<";
+        v.type = "string";
+        $$ = make_node(&v, SHIFT_EXPRESSION, 2, $1, $3);
     }
     | shift_expression SHIFT_RIGHT additive_expression {
-        $$ = make_node(NULL, SHIFT_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = ">>";
+        v.type = "string";
+        $$ = make_node(&v, SHIFT_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -850,16 +871,28 @@ relational_expression
         $$ = make_node(NULL, RELATIONAL_EXPRESSION, 1, $1);
     }
     | relational_expression LT shift_expression {
-        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "<";
+        v.type = "string";
+        $$ = make_node(&v, RELATIONAL_EXPRESSION, 2, $1, $3);
     }
     | relational_expression GT shift_expression {
-        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = ">";
+        v.type = "string";
+        $$ = make_node(&v, RELATIONAL_EXPRESSION, 2, $1, $3);
     }
     | relational_expression LE shift_expression {
-        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "<=";
+        v.type = "string";
+        $$ = make_node(&v, RELATIONAL_EXPRESSION, 2, $1, $3);
     }
     | relational_expression GE shift_expression {
-        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = ">=";
+        v.type = "string";
+        $$ = make_node(&v, RELATIONAL_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -868,10 +901,16 @@ equality_expression
         $$ = make_node(NULL, EQUALITY_EXPRESSION, 1, $1);
     }
     | equality_expression EQ relational_expression {
-        $$ = make_node(NULL, EQUALITY_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "==";
+        v.type = "string";
+        $$ = make_node(&v, EQUALITY_EXPRESSION, 2, $1, $3);
     }
     | equality_expression NE relational_expression {
-        $$ = make_node(NULL, EQUALITY_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "!=";
+        v.type = "string";
+        $$ = make_node(&v, EQUALITY_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -880,7 +919,10 @@ and_expression
         $$ = make_node(NULL, AND_EXPRESSION, 1, $1);
     }
     | and_expression BIT_AND equality_expression {
-        $$ = make_node(NULL, AND_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "&";
+        v.type = "string";
+        $$ = make_node(&v, AND_EXPRESSION, 2, $1, $3);
     }
     ;
  
@@ -889,7 +931,10 @@ exclusive_or_expression
         $$ = make_node(NULL, EXCLUSIVE_OR_EXPRESSION, 1, $1);
     }
     | exclusive_or_expression BIT_XOR and_expression {
-        $$ = make_node(NULL, EXCLUSIVE_OR_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "^";
+        v.type = "string";
+        $$ = make_node(&v, EXCLUSIVE_OR_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -898,7 +943,10 @@ inclusive_or_expression
         $$ = make_node(NULL, INCLUSIVE_OR_EXPRESSION, 1, $1);
     }
     | inclusive_or_expression BIT_OR exclusive_or_expression {
-        $$ = make_node(NULL, INCLUSIVE_OR_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "|";
+        v.type = "string";
+        $$ = make_node(&v, INCLUSIVE_OR_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -907,7 +955,10 @@ logical_and_expression
         $$ = make_node(NULL, LOGICAL_AND_EXPRESSION, 1, $1);
     }
     | logical_and_expression AND inclusive_or_expression {
-        $$ = make_node(NULL, LOGICAL_AND_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "&&";
+        v.type = "string";
+        $$ = make_node(&v, LOGICAL_AND_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -916,7 +967,10 @@ logical_or_expression
         $$ = make_node(NULL, LOGICAL_OR_EXPRESSION, 1, $1);
     }
     | logical_or_expression OR logical_and_expression {
-        $$ = make_node(NULL, LOGICAL_OR_EXPRESSION, 2, $1, $3);
+        value v;
+        v.v.s = "||";
+        v.type = "string";
+        $$ = make_node(&v, LOGICAL_OR_EXPRESSION, 2, $1, $3);
     }
     ;
 
@@ -1096,13 +1150,22 @@ expression_statement
  
 selection_statement
     : IF LPAREN expression RPAREN statement {
-        $$ = make_node(NULL, SELECTION_STATEMENT, 2, $3, $5);
+        value v;
+        v.v.s = "if";
+        v.type = "string";
+        $$ = make_node(&v, SELECTION_STATEMENT, 2, $3, $5);
     }
     | IF LPAREN expression RPAREN statement ELSE statement {
-        $$ = make_node(NULL, SELECTION_STATEMENT, 3, $3, $5, $7);
+        value v;
+        v.v.s = "if";
+        v.type = "string";
+        $$ = make_node(&v, SELECTION_STATEMENT, 3, $3, $5, $7);
     }
     | SWITCH LPAREN expression RPAREN statement {
-        $$ = make_node(NULL, SELECTION_STATEMENT, 2, $3, $5);
+        value v;
+        v.v.s = "switch";
+        v.type = "string";
+        $$ = make_node(&v, SELECTION_STATEMENT, 2, $3, $5);
     }
     ;
 
