@@ -1,5 +1,6 @@
 %{
     #include "AST.h"
+    #include "IR.h"
     yyerror(const char *s);  
     extern int yylex(void);
     AST *root;
@@ -1060,7 +1061,9 @@ labeled_statement
     ;
 
 compound_statement
-    : LBRACE RBRACE
+    : LBRACE RBRACE {
+        $$ = NULL;
+    }
     | LBRACE block_item_list RBRACE {
         $$ = make_node(NULL, COMPOUND_STATEMENT, 1, $2);
     }
@@ -1152,6 +1155,8 @@ int main(int argc, char *argv[])
     yyout = fopen(output, "w");
     printf("parsing...\n");
     yyparse();   
+    printf("parsing done.\n");
+    translate(root);
     fclose(yyin);
     fclose(yyout);
     return 0;
