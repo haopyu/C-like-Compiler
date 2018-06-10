@@ -1,6 +1,7 @@
 #include "IR.h"
 
-EXP exp;
+String op;
+String symbol;
 
 void translate(AST* ast) {
     if (ast == NULL) return;
@@ -103,6 +104,11 @@ void compound_statement(AST* node) {
                 break;
             }
             case SELECTION_STATEMENT: {
+                if(!strcmp(node->children[i]->val->v.s,"if")) {
+                    printf("if ");
+                } else if(!strcmp(node->children[i]->val->v.s,"switch")) {
+
+                }
                 selection_statement(node->children[i]);
                 break;
             }
@@ -114,6 +120,7 @@ void selection_statement(AST* node) {
     int i;
     for (i = 0; i < 4; i++) {
         if (node->children[i] == NULL) continue;
+        printf("fxxk ");
         switch (node->children[i]->node_identifier) {
             case ASSIGNMENT_EXPRESSION:
             case CONDITIONAL_EXPRESSION:
@@ -121,86 +128,68 @@ void selection_statement(AST* node) {
             case LOGICAL_AND_EXPRESSION:
             case INCLUSIVE_OR_EXPRESSION:
             case EXCLUSIVE_OR_EXPRESSION:
+            case MULTIPLICATIVE_EXPRESSION:
+            case ADDITIVE_EXPRESSION:
+            case SHIFT_EXPRESSION:
             case AND_EXPRESSION:
             case CAST_EXPRESSION:
             case UNARY_EXPRESSION:
             case POSTFIX_EXPRESSION:
-            case PRIMARY_EXPRESSION:
             case EXPRESSION:
             case STATEMENT: {
-                compound_statement(node->children[i]);
-                break;
-            }
-            case INIT_DECLARATOR: {
-                if(node->children[i]->val == NULL) {
-                    continue;
-                } 
-                else {
-                    printf("move ");
-                    compound_statement(node->children[i]);
-                }
-                break;
-            }
-            case DIRECT_DECLARATOR: {
-                if (node->children[i]->num_of_sons == 0) {
-                    printf("%s, ",node->children[i]->val->v.s);
-                }
-                else {
-                    compound_statement(node->children[i]);
-                }
+                printf("qweqw ");
+                //printf("%d\n", node->children[i]->node_identifier);
+                selection_statement(node->children[i]);
+                printf("111111 ");
                 break;
             }
             case CONSTANT: {
+                printf("%s %s ", symbol, op);
                 if(!strcmp(node->children[i]->val->type,"integer")) {
-                    printf("%d\n", node->children[i]->val->v.i);
+                    //printf("%d\n  ", node->children[i]->val->v.i);
                 }
                 else if(!strcmp(node->children[i]->val->type,"float")) {
                     printf("%f\n", node->children[i]->val->v.f);
                 }
                 break;
             }
-            case JUMP_STATEMENT: {
-                printf("jump ");
-                compound_statement(node->children[i]);
-                break;
-            }
-            case SELECTION_STATEMENT: {
-                if(!strcmp(node->children[i]->val->v.s,"if")) {
-                    printf("if ");
-                } else if(!strcmp(node->children[i]->val->v.s,"switch")) {
-
-                }
-                
-                break;
-            }
-
-            case MULTIPLICATIVE_EXPRESSION:
-            case ADDITIVE_EXPRESSION:
-            case SHIFT_EXPRESSION:
             case RELATIONAL_EXPRESSION: 
             case EQUALITY_EXPRESSION: {
-                if(!strcmp(node->children[i]->val->v.s,"==")) {
-                    exp.op = "==";
+                printf("%d ",node->children[i]->num_of_sons);
+                if (node->children[i]->val != NULL) {
+                    if(!strcmp(node->children[i]->val->v.s,"==")) {
+                        op = "==";
+                    }
+                    else if (!strcmp(node->children[i]->val->v.s,"!=")) {
+                        op = "!=";
+                    }
+                    else if (!strcmp(node->children[i]->val->v.s,"<")) {
+                        op = "<";
+                    }
+                    else if (!strcmp(node->children[i]->val->v.s,">")) {
+                        op = ">";
+                    }
+                    else if (!strcmp(node->children[i]->val->v.s,"<=")) {
+                        op = "<=";
+                    }
+                    else if (!strcmp(node->children[i]->val->v.s,">=")) {
+                        op = ">=";
+                    }
                 }
-                else if (!strcmp(node->children[i]->val->v.s,"!=")) {
-                    exp.op = "!=";
-                }
-                else if (!strcmp(node->children[i]->val->v.s,"<")) {
-                    exp.op = "<";
-                }
-                else if (!strcmp(node->children[i]->val->v.s,">")) {
-                    exp.op = ">";
-                }
-                else if (!strcmp(node->children[i]->val->v.s,"<=")) {
-                    exp.op = "<=";
-                }
-                else if (!strcmp(node->children[i]->val->v.s,">=")) {
-                    exp.op = ">=";
-                }
-
                 
+                selection_statement(node->children[i]);
+                printf("kkkkk ");       
+                break;
             }
-            
+            case PRIMARY_EXPRESSION: {
+                if(!strcmp(node->children[i]->val->type,"identifier")) {
+                    symbol = node->children[i]->val->v.s;
+                }
+                printf("%s %s\n", op, symbol);
+                printf("ha ");
+                // selection_statement(node->children[i]);
+                break;
+            }
         }
     }
 }
