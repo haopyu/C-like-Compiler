@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "AST.h"
 
-typedef struct expression exp;
+typedef struct expression EXP;
 struct expression {
     String op;
     String symbol;
