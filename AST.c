@@ -70,7 +70,8 @@ const String slabels[] = {
 	"ARGUMENT_EXPRESSION_LIST",
 	"AND_EXPRESSION",
 	"ADDITIVE_EXPRESSION",
-	"ABSTRACT_DECLARATOR"
+	"ABSTRACT_DECLARATOR",
+	"ERROR"
 };
 
 AST* make_node(value *val, int _case, int num_of_sons, ...) {

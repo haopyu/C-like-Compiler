@@ -333,7 +333,7 @@ struct_declaration
         $$ = make_node(NULL, STRUCT_DECLARATION, 2, $1, $2);
     }
     | error SEMICOLON {
-        
+        $$ = make_node(NULL, ERROR, 0);
     }
     ;
 
@@ -1154,7 +1154,7 @@ expression_statement
         $$ = NULL;
     }
     | error SEMICOLON {
-
+        $$ = make_node(NULL, ERROR, 0);
     }
     ;
  
@@ -1193,7 +1193,7 @@ iteration_statement
         $$ = make_node(NULL, ITERATION_STATEMENT, 4, $3, $4, $5, $7);
     }
     | error RPAREN {
-
+        $$ = make_node(NULL, ERROR, 0);
     }
     ;
 

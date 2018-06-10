@@ -4170,17 +4170,17 @@ yyreturn:
 int main(int argc, char *argv[])
 {
     extern FILE *yyin, *yyout;
-    char output[256];
+    // char output[256];
     yyin = fopen(argv[1], "r");
-    sscanf(argv[1], "%s", output);
-    strcat(output, ".out");
-    yyout = fopen(output, "w");
+    // sscanf(argv[1], "%s", output);
+    // strcat(output, ".out");
+    // yyout = fopen(output, "w");
     printf("parsing...\n");
     yyparse();   
     printf("parsing done.\n");
     translate(root);
     fclose(yyin);
-    fclose(yyout);
+    // fclose(yyout);
     return 0;
 }
 
