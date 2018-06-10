@@ -68,7 +68,7 @@ EXP                        [eE][+-]?[0-9]+
 [a-zA-Z_][0-9a-zA-Z_]*            { yylval.val_str = strdup(yytext); return IDENTIFIER; }
 ({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val_str = strdup(yytext); return STRING; }
 
-"..."					   ATOMIC{ return ELLIPSIS; }
+"..."					   { return ELLIPSIS; }
 "+"                        { return ADD; }
 "-"                        { return SUB; }
 "*"                        { return MUL; }

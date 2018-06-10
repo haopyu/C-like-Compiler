@@ -1,7 +1,7 @@
-#include <stdio.h>
-
 int main() {
-    /* test */
-    int a = 3.5f;
-    //float b = 2.e-1, c = .3f;
+    int a = 0;
+    if (a == 0) {
+        a = a + 1;
+    }
+    return 1;
 }
