@@ -500,54 +500,103 @@ pointer
 
 type_qualifier_list
 	: type_qualifier {
-        
+        $$ = make_node(NULL, TYPE_QUALIFIER_LIST, 1, $1);
     }
-	| type_qualifier_list type_qualifier
+	| type_qualifier_list type_qualifier {
+        $$ = make_node(NULL, TYPE_QUALIFIER_LIST, 2, $1, $2);
+    }
 	;
 
 parameter_type_list
-	: parameter_list COMMA ELLIPSIS
-	| parameter_list
+	: parameter_list COMMA ELLIPSIS {
+        $$ = make_node(NULL, PARAMETER_TYPE_LIST, 1, $1);
+    }
+	| parameter_list {
+        $$ = make_node(NULL, PARAMETER_TYPE_LIST, 1, $1);
+    }
 	;
     
 parameter_list
-    : parameter_declaration
-    | parameter_list COMMA parameter_declaration
+    : parameter_declaration {
+        $$ = make_node(NULL, PARAMETER_LIST, 1, $1);
+    }
+    | parameter_list COMMA parameter_declaration {
+        $$ = make_node(NULL, PARAMETER_LIST, 2, $1, $3);
+    }
     ;
 
 parameter_declaration
-    : declaration_specifiers  declarator
-    | declaration_specifiers abstract_declarator
-    | declaration_specifiers
+    : declaration_specifiers  declarator {
+        $$ = make_node(NULL, PARAMETER_DECLARATION, 2, $1, $2);
+        // type check
+    }
+    | declaration_specifiers abstract_declarator {
+        $$ = make_node(NULL, PARAMETER_DECLARATION, 2, $1, $2);
+    }
+    | declaration_specifiers {
+        $$ = make_node(NULL, PARAMETER_DECLARATION, 1, $1);
+    }
     ;
 
 identifier_list
-    : IDENTIFIER
-    | identifier_list COMMA IDENTIFIER
+    : IDENTIFIER {
+        value v;
+        v.v.s = $1;
+        v.type = "identifier";
+        $$ = make_node(&v, IDENTIFIER_LIST, 0);
+    }
+    | identifier_list COMMA IDENTIFIER {
+        value v;
+        v.v.s = $3;
+        v.type = "identifier";
+        $$ = make_node(&v, IDENTIFIER_LIST, 1, $1);
+    }
     ;
 
 type_name
-	: specifier_qualifier_list abstract_declarator
-    | specifier_qualifier_list
+	: specifier_qualifier_list abstract_declarator {
+        $$ = make_node(NULL, TYPE_NAME, 2, $1, $2);
+    }
+    | specifier_qualifier_list {
+        $$ = make_node(NULL, TYPE_NAME, 1, $1);
+    }
 	;
 
 abstract_declarator
-	: pointer direct_abstract_declarator
-    | direct_abstract_declarator
-	| pointer
+	: pointer direct_abstract_declarator {
+        $$ = make_node(NULL, ABSTRACT_DECLARATOR, 2, $1, $2);
+    }
+    | direct_abstract_declarator {
+        $$ = make_node(NULL, ABSTRACT_DECLARATOR, 1, $1);
+    }
+	| pointer {
+        $$ = make_node(NULL, ABSTRACT_DECLARATOR, 1, $1);
+    }
 	;
 
 direct_abstract_declarator
-	: LPAREN abstract_declarator RPAREN
-    | direct_abstract_declarator LBRACKET assignment_expression RBRACKET
-    | direct_abstract_declarator LBRACKET RBRACKET
-    | direct_abstract_declarator LBRACKET MUL RBRACKET
-	| direct_abstract_declarator LPAREN parameter_type_list RPAREN
-    | direct_abstract_declarator LPAREN RPAREN
+	: LPAREN abstract_declarator RPAREN {
+        $$ = make_node(NULL, DIRECT_ABSTRACT_DECLARATOR, 1, $2);
+    }
+    | direct_abstract_declarator LBRACKET assignment_expression RBRACKET {
+        $$ = make_node(NULL, DIRECT_ABSTRACT_DECLARATOR, 2, $1, $3);
+    }
+    | direct_abstract_declarator LBRACKET RBRACKET {
+        $$ = make_node(NULL, DIRECT_ABSTRACT_DECLARATOR, 1, $1);
+    }
+    | direct_abstract_declarator LBRACKET MUL RBRACKET {
+        $$ = make_node(NULL, DIRECT_ABSTRACT_DECLARATOR, 1, $1);
+    }
+	| direct_abstract_declarator LPAREN parameter_type_list RPAREN {
+        $$ = make_node(NULL, DIRECT_ABSTRACT_DECLARATOR, 2, $1, $3);
+    }
+    | direct_abstract_declarator LPAREN RPAREN {
+        $$ = make_node(NULL, DIRECT_ABSTRACT_DECLARATOR, 1, $1);
+    }
 	;
 
 initializer
-    : assignment_expression
+    : assignment_expression 
     | LBRACE initializer_list RBRACE
     | LBRACE initializer_list COMMA RBRACE
     ;
