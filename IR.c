@@ -1,7 +1,6 @@
 #include "IR.h"
 
-String op;
-String symbol;
+EXP exp_code;
 
 void translate(AST* ast) {
     if (ast == NULL) return;
@@ -66,7 +65,7 @@ void compound_statement(AST* node) {
             case POSTFIX_EXPRESSION:
             case PRIMARY_EXPRESSION:
             case EXPRESSION:
-            case ASSIGNMENT_EXPRESSION:
+            case ASSIGNMENT_EXPRESSION: 
             case STATEMENT: {
                 compound_statement(node->children[i]);
                 break;
@@ -145,7 +144,7 @@ void selection_statement(AST* node) {
                 compound_statement(node->children[i]);
             }
             case CONSTANT: {
-                printf("%s %s ", symbol, op);
+                printf("%s %s ", exp_code.symbol, exp_code.op);
                 if(!strcmp(node->children[i]->val->type,"integer")) {
                     printf("%d ", node->children[i]->val->v.i);
                 }
@@ -159,22 +158,22 @@ void selection_statement(AST* node) {
             case EQUALITY_EXPRESSION: {
                 if (node->children[i]->val != NULL) {
                     if(!strcmp(node->children[i]->val->v.s,"==")) {
-                        op = "==";
+                        exp_code.op = "==";
                     }
                     else if (!strcmp(node->children[i]->val->v.s,"!=")) {
-                        op = "!=";
+                        exp_code.op = "!=";
                     }
                     else if (!strcmp(node->children[i]->val->v.s,"<")) {
-                        op = "<";
+                        exp_code.op = "<";
                     }
                     else if (!strcmp(node->children[i]->val->v.s,">")) {
-                        op = ">";
+                        exp_code.op = ">";
                     }
                     else if (!strcmp(node->children[i]->val->v.s,"<=")) {
-                        op = "<=";
+                        exp_code.op = "<=";
                     }
                     else if (!strcmp(node->children[i]->val->v.s,">=")) {
-                        op = ">=";
+                        exp_code.op = ">=";
                     }
                 }
                 selection_statement(node->children[i]);
@@ -183,7 +182,7 @@ void selection_statement(AST* node) {
             case PRIMARY_EXPRESSION: {
                 if (node->children[i]->val != NULL) {
                     if(!strcmp(node->children[i]->val->type, "identifier")) {
-                        symbol = node->children[i]->val->v.s;
+                        exp_code.symbol = node->children[i]->val->v.s;
                     }
                 } 
                 selection_statement(node->children[i]);
