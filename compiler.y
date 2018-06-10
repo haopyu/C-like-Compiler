@@ -120,7 +120,8 @@ declaration
     }
 	| declaration_specifiers init_declarator_list SEMICOLON {
         $$ = make_node(NULL, DECLARATION, 2, $1, $2);
-        // type check
+        printf("###$1type is: ", $1.value->type);
+        printf("###$2type is: ", $2.value->type);
     }
     ;
 
