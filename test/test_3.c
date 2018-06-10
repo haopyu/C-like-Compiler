@@ -1,12 +1,10 @@
 //recursive
-#include "stdio.h"
 
 int fib(int n);
 int i;
 int main()
 {
-    scanf("%d", &i);
-    printf("%d\n", fib(i));
+    fib(10);
 
     return 0;
 }
