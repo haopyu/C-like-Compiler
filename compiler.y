@@ -2,9 +2,10 @@
     #include "AST.h"
     yyerror(const char *s);  
     extern int yylex(void);
+    AST *root;
 %}
 
-%union { int val_int; float val_float; String val_str; int type; }
+%union { int val_int; float val_float; String val_str; int type; AST * tree; }
 
 %token	CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO 
 %token  CONTINUE BREAK RETURN SIZEOF
@@ -29,6 +30,7 @@
 %type <val_float> FLOAT_CONST
 %type <val_str>  IDENTIFIER STRING
 %type <type> INT FLOAT DOUBLE CHAR
+%type <tree> unary_operator unary_expression type_specifier type_qualifier_list type_qualifier type_name translation_unit struct_declarator struct_declarator_list specifier_qualifier_list struct_declaration struct_declaration_list struct_or_union struct_or_union_specifier storage_class_specifier statement  shift_expression selection_statement relational_expression program primary_expression postfix_expression pointer parameter_declaration parameter_list parameter_type_list multiplicative_expression logical_or_expression logical_and_expression labeled_statement jump_statement iteration_statement initializer_list initializer init_declarator init_declarator_list inclusive_or_expression identifier_list function_specifier function_definition external_declaration expression_statement expression exclusive_or_expression equality_expression enumerator enumerator_list enum_specifier direct_abstract_declarator direct_declarator designator designator_list designation declaration_list declarator declaration_specifiers declaration constant_expression constant conditional_expression compound_statement cast_expression block_item block_item_list assignment_operator assignment_expression argument_expression_list and_expression additive_expression abstract_declarator
 
 %left COMMA
 %right ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN SHIFT_LEFT_ASSIGN SHIFT_RIGHT_ASSIGN AND_ASSIGN 
@@ -52,13 +54,24 @@
 
 program
     : translation_unit {
-        AST *root = make_node(NULL, PROGRAM, 1, $1);
+        root = make_node(NULL, PROGRAM, 1, $1);
+        print_tree(root);
     }
     ;
 
 constant
-    : FLOAT_CONST  { printf("%s", $1->text); }
-    | INT_CONST { printf("%s", $1->text); }
+    : FLOAT_CONST  {
+        value v;
+        v.v.f = $1;
+        v.type = "float";
+        $$ = make_node(&v, CONSTANT, 0);
+    }
+    | INT_CONST { 
+        value v;
+        v.v.i = $1;
+        v.type = "integer";
+        $$ = make_node(&v, CONSTANT, 0);
+    }
     ;
 
 // external definitions
@@ -83,10 +96,10 @@ external_declaration
 
 function_definition
     : declaration_specifiers declarator compound_statement {
-        $$ = make_node(NULL, FUNCTION_DEFINITION, 4, $1, $2, $3, $4);
+        $$ = make_node(NULL, FUNCTION_DEFINITION, 3, $1, $2, $3);
     }
     | declaration_specifiers declarator declaration_list compound_statement {
-        $$ = make_node(NULL, FUNCTION_DEFINITION, 3, $1, $2, $3);
+        $$ = make_node(NULL, FUNCTION_DEFINITION, 4, $1, $2, $3, $4);
     }
     ; 
 
@@ -106,7 +119,7 @@ declaration
         $$ = make_node(NULL, DECLARATION, 1, $1);
     }
 	| declaration_specifiers init_declarator_list SEMICOLON {
-        $$ = make_node(NULL, DECLARATION_LIST, 2, $1, $2);
+        $$ = make_node(NULL, DECLARATION, 2, $1, $2);
         // type check
     }
     ;
@@ -452,7 +465,7 @@ direct_declarator
         $$ = make_node(&v, DIRECT_DECLARATOR, 0);
     }
     | LPAREN declarator RPAREN {
-        $$ = make_node(NULL, DIRECT_DECLARATOR, 1, $1);
+        $$ = make_node(NULL, DIRECT_DECLARATOR, 1, $2);
     }
     | direct_declarator LBRACKET type_qualifier_list assignment_expression RBRACKET {
         $$ = make_node(NULL, DIRECT_DECLARATOR, 3, $1, $3, $4);
@@ -478,8 +491,11 @@ direct_declarator
     | direct_declarator LPAREN parameter_type_list RPAREN {
         $$ = make_node(NULL, DIRECT_DECLARATOR, 2, $1, $3);
     }
-    | direct_declarator LPAREN  identifier_list RPAREN {
+    | direct_declarator LPAREN identifier_list RPAREN {
         $$ = make_node(NULL, DIRECT_DECLARATOR, 2, $1, $3);
+    }
+    | direct_declarator LPAREN RPAREN {
+        $$ = make_node(NULL, DIRECT_DECLARATOR, 1, $1);
     }
     ;   
 
@@ -687,13 +703,13 @@ postfix_expression
     }
     | postfix_expression DOT IDENTIFIER {
         value v;
-        v.v.s = $1;
+        v.v.s = $3;
         v.type = "identifier";
         $$ = make_node(&v, POSTFIX_EXPRESSION, 1, $1);
     }
     | postfix_expression PTR IDENTIFIER {
         value v;
-        v.v.s = $1;
+        v.v.s = $3;
         v.type = "identifier";
         $$ = make_node(&v, POSTFIX_EXPRESSION, 1, $1);
     }
@@ -742,110 +758,267 @@ unary_expression
     ;
 
 unary_operator
-    : BIT_AND
-    | MUL
-    | ADD
-    | SUB
-    | NEGATION
-    | NOT
+    : BIT_AND {
+        value v;
+        v.v.s = "&";
+        v.type = "string";
+        $$ = make_node(&v, UNARY_OPERATOR, 0);
+    }
+    | MUL {
+        value v;
+        v.v.s = "*";
+        v.type = "string";
+        $$ = make_node(&v, UNARY_OPERATOR, 0);
+    }
+    | ADD {
+        value v;
+        v.v.s = "+";
+        v.type = "string";
+        $$ = make_node(&v, UNARY_OPERATOR, 0);
+    }
+    | SUB {
+        value v;
+        v.v.s = "-";
+        v.type = "string";
+        $$ = make_node(&v, UNARY_OPERATOR, 0);
+    }
+    | NEGATION {
+        value v;
+        v.v.s = "~";
+        v.type = "string";
+        $$ = make_node(&v, UNARY_OPERATOR, 0);
+    }
+    | NOT {
+        value v;
+        v.v.s = "!";
+        v.type = "string";
+        $$ = make_node(&v, UNARY_OPERATOR, 0);
+    }
     ;
 
 cast_expression
     : unary_expression {
-        
+        $$ = make_node(NULL, CAST_EXPRESSION, 1, $1);
     }
-    | LPAREN type_name RPAREN cast_expression
+    | LPAREN type_name RPAREN cast_expression {
+        $$ = make_node(NULL, CAST_EXPRESSION, 2, $2, $4);
+    }
     ;
 
 multiplicative_expression
-    : cast_expression
-    | multiplicative_expression MUL cast_expression
-    | multiplicative_expression DIV cast_expression
-    | multiplicative_expression MOD cast_expression
+    : cast_expression {
+        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 1, $1);
+    }
+    | multiplicative_expression MUL cast_expression {
+        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
+    }
+    | multiplicative_expression DIV cast_expression {
+        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
+    }
+    | multiplicative_expression MOD cast_expression {
+        $$ = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 additive_expression
-    : multiplicative_expression
-    | additive_expression ADD multiplicative_expression
-    | additive_expression SUB multiplicative_expression
+    : multiplicative_expression {
+        $$ = make_node(NULL, ADDITIVE_EXPRESSION, 1, $1);
+    }
+    | additive_expression ADD multiplicative_expression {
+        $$ = make_node(NULL, ADDITIVE_EXPRESSION, 2, $1, $3);
+    }
+    | additive_expression SUB multiplicative_expression {
+        $$ = make_node(NULL, ADDITIVE_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 shift_expression
-    : additive_expression
-    | shift_expression SHIFT_LEFT additive_expression
-    | shift_expression SHIFT_RIGHT additive_expression
+    : additive_expression {
+        $$ = make_node(NULL, SHIFT_EXPRESSION, 1, $1);
+    }
+    | shift_expression SHIFT_LEFT additive_expression {
+        $$ = make_node(NULL, SHIFT_EXPRESSION, 2, $1, $3);
+    }
+    | shift_expression SHIFT_RIGHT additive_expression {
+        $$ = make_node(NULL, SHIFT_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 relational_expression
-    : shift_expression
-    | relational_expression LT shift_expression
-    | relational_expression GT shift_expression
-    | relational_expression LE shift_expression
-    | relational_expression GE shift_expression
+    : shift_expression {
+        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 1, $1);
+    }
+    | relational_expression LT shift_expression {
+        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+    }
+    | relational_expression GT shift_expression {
+        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+    }
+    | relational_expression LE shift_expression {
+        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+    }
+    | relational_expression GE shift_expression {
+        $$ = make_node(NULL, RELATIONAL_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 equality_expression
-    : relational_expression
-    | equality_expression EQ relational_expression
-    | equality_expression NE relational_expression
+    : relational_expression {
+        $$ = make_node(NULL, EQUALITY_EXPRESSION, 1, $1);
+    }
+    | equality_expression EQ relational_expression {
+        $$ = make_node(NULL, EQUALITY_EXPRESSION, 2, $1, $3);
+    }
+    | equality_expression NE relational_expression {
+        $$ = make_node(NULL, EQUALITY_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 and_expression
-    : equality_expression
-    | and_expression BIT_AND equality_expression
+    : equality_expression {
+        $$ = make_node(NULL, AND_EXPRESSION, 1, $1);
+    }
+    | and_expression BIT_AND equality_expression {
+        $$ = make_node(NULL, AND_EXPRESSION, 2, $1, $3);
+    }
     ;
  
 exclusive_or_expression
-    : and_expression
-    | exclusive_or_expression BIT_XOR and_expression
+    : and_expression {
+        $$ = make_node(NULL, EXCLUSIVE_OR_EXPRESSION, 1, $1);
+    }
+    | exclusive_or_expression BIT_XOR and_expression {
+        $$ = make_node(NULL, EXCLUSIVE_OR_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 inclusive_or_expression
-    : exclusive_or_expression
-    | inclusive_or_expression BIT_OR exclusive_or_expression
+    : exclusive_or_expression {
+        $$ = make_node(NULL, INCLUSIVE_OR_EXPRESSION, 1, $1);
+    }
+    | inclusive_or_expression BIT_OR exclusive_or_expression {
+        $$ = make_node(NULL, INCLUSIVE_OR_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 logical_and_expression
-    : inclusive_or_expression
-    | logical_and_expression AND inclusive_or_expression
+    : inclusive_or_expression {
+        $$ = make_node(NULL, LOGICAL_AND_EXPRESSION, 1, $1);
+    }
+    | logical_and_expression AND inclusive_or_expression {
+        $$ = make_node(NULL, LOGICAL_AND_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 logical_or_expression
-    : logical_and_expression
-    | logical_or_expression OR logical_and_expression
+    : logical_and_expression {
+        $$ = make_node(NULL, LOGICAL_OR_EXPRESSION, 1, $1);
+    }
+    | logical_or_expression OR logical_and_expression {
+        $$ = make_node(NULL, LOGICAL_OR_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 conditional_expression
-    : logical_or_expression
-    | logical_or_expression QM expression COLON conditional_expression
+    : logical_or_expression {
+        $$ = make_node(NULL, CONDITIONAL_EXPRESSION, 1, $1);
+    }
+    | logical_or_expression QM expression COLON conditional_expression {
+        $$ = make_node(NULL, CONDITIONAL_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 assignment_expression
-    : conditional_expression
-    | unary_expression assignment_operator assignment_expression
+    : conditional_expression {
+        $$ = make_node(NULL, ASSIGNMENT_EXPRESSION, 1, $1);
+    }
+    | unary_expression assignment_operator assignment_expression {
+        $$ = make_node(NULL, ASSIGNMENT_EXPRESSION, 2, $1, $3);
+    }
     ;
 
 assignment_operator
-    : ASSIGN
-    | MUL_ASSIGN
-    | DIV_ASSIGN
-    | MOD_ASSIGN
-    | ADD_ASSIGN
-    | SUB_ASSIGN
-    | SHIFT_LEFT_ASSIGN
-    | SHIFT_RIGHT_ASSIGN
-    | AND_ASSIGN
-    | XOR_ASSIGN
-    | OR_ASSIGN
+    : ASSIGN {
+        value v;
+        v.v.s = "=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | MUL_ASSIGN {
+        value v;
+        v.v.s = "*=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | DIV_ASSIGN {
+        value v;
+        v.v.s = "/=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | MOD_ASSIGN {
+        value v;
+        v.v.s = "%=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | ADD_ASSIGN {
+        value v;
+        v.v.s = "+=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | SUB_ASSIGN {
+        value v;
+        v.v.s = "-=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | SHIFT_LEFT_ASSIGN {
+        value v;
+        v.v.s = "<<=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | SHIFT_RIGHT_ASSIGN {
+        value v;
+        v.v.s = ">>=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | AND_ASSIGN {
+        value v;
+        v.v.s = "&=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | XOR_ASSIGN {
+        value v;
+        v.v.s = "^=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
+    | OR_ASSIGN {
+        value v;
+        v.v.s = "|=";
+        v.type = "string";
+        $$ = make_node(&v, POSTFIX_EXPRESSION,0);
+    }
     ;
 
 expression
-    : assignment_expression
-    | expression COMMA assignment_expression
+    : assignment_expression {
+        $$ = make_node(NULL, EXPRESSION, 1, $1);
+    }
+    | expression COMMA assignment_expression {
+        $$ = make_node(NULL, EXPRESSION, 2, $1, $3);
+    }
     ;
 
 constant_expression
-    : conditional_expression
+    : conditional_expression {
+        $$ = make_node(NULL, CONSTANT_EXPRESSION, 1, $1);
+    }
     ;
 
 // statements
@@ -977,7 +1150,8 @@ int main(int argc, char *argv[])
     sscanf(argv[1], "%s", output);
     strcat(output, ".out");
     yyout = fopen(output, "w");
-    yyparse();
+    printf("parsing...\n");
+    yyparse();   
     fclose(yyin);
     fclose(yyout);
     return 0;
