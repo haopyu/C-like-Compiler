@@ -99,7 +99,7 @@ void compound_statement(AST* node) {
                 break;
             }
             case JUMP_STATEMENT: {
-                printf("jump L2");
+                printf("jump L2\n");
                 //compound_statement(node->children[i]);
                 printf("label L2\n");
                 break;
