@@ -988,7 +988,7 @@ assignment_expression
         $$ = make_node(NULL, ASSIGNMENT_EXPRESSION, 1, $1);
     }
     | unary_expression assignment_operator assignment_expression {
-        $$ = make_node(NULL, ASSIGNMENT_EXPRESSION, 2, $1, $3);
+        $$ = make_node(NULL, ASSIGNMENT_EXPRESSION, 3, $1, $2, $3);
     }
     ;
 

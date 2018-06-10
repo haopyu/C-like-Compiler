@@ -49,7 +49,6 @@ void compound_statement(AST* node) {
             case DECLARATOR:
             case INIT_DECLARATOR_LIST:
             case INITIALIZER:
-            case ASSIGNMENT_EXPRESSION:
             case CONDITIONAL_EXPRESSION:
             case LOGICAL_OR_EXPRESSION:
             case LOGICAL_AND_EXPRESSION:
@@ -61,11 +60,13 @@ void compound_statement(AST* node) {
             case SHIFT_EXPRESSION:
             case ADDITIVE_EXPRESSION:
             case MULTIPLICATIVE_EXPRESSION:
+            case EXPRESSION_STATEMENT:
             case CAST_EXPRESSION:
             case UNARY_EXPRESSION:
             case POSTFIX_EXPRESSION:
             case PRIMARY_EXPRESSION:
             case EXPRESSION:
+            case ASSIGNMENT_EXPRESSION:
             case STATEMENT: {
                 compound_statement(node->children[i]);
                 break;
@@ -105,11 +106,12 @@ void compound_statement(AST* node) {
             }
             case SELECTION_STATEMENT: {
                 if(!strcmp(node->children[i]->val->v.s,"if")) {
-                    printf("if ");
+                    printf("if_false ");
                 } else if(!strcmp(node->children[i]->val->v.s,"switch")) {
 
                 }
                 selection_statement(node->children[i]);
+                printf("label L1\n");
                 break;
             }
         }
@@ -120,7 +122,6 @@ void selection_statement(AST* node) {
     int i;
     for (i = 0; i < 4; i++) {
         if (node->children[i] == NULL) continue;
-        printf("fxxk ");
         switch (node->children[i]->node_identifier) {
             case ASSIGNMENT_EXPRESSION:
             case CONDITIONAL_EXPRESSION:
@@ -135,27 +136,27 @@ void selection_statement(AST* node) {
             case CAST_EXPRESSION:
             case UNARY_EXPRESSION:
             case POSTFIX_EXPRESSION:
-            case EXPRESSION:
+            case EXPRESSION: 
             case STATEMENT: {
-                printf("qweqw ");
-                //printf("%d\n", node->children[i]->node_identifier);
                 selection_statement(node->children[i]);
-                printf("111111 ");
                 break;
+            }
+            case COMPOUND_STATEMENT: {
+                compound_statement(node->children[i]);
             }
             case CONSTANT: {
                 printf("%s %s ", symbol, op);
                 if(!strcmp(node->children[i]->val->type,"integer")) {
-                    //printf("%d\n  ", node->children[i]->val->v.i);
+                    printf("%d ", node->children[i]->val->v.i);
                 }
                 else if(!strcmp(node->children[i]->val->type,"float")) {
-                    printf("%f\n", node->children[i]->val->v.f);
+                    printf("%f ", node->children[i]->val->v.f);
                 }
+                printf("goto L1\n");
                 break;
             }
             case RELATIONAL_EXPRESSION: 
             case EQUALITY_EXPRESSION: {
-                printf("%d ",node->children[i]->num_of_sons);
                 if (node->children[i]->val != NULL) {
                     if(!strcmp(node->children[i]->val->v.s,"==")) {
                         op = "==";
@@ -176,18 +177,16 @@ void selection_statement(AST* node) {
                         op = ">=";
                     }
                 }
-                
                 selection_statement(node->children[i]);
-                printf("kkkkk ");       
                 break;
             }
             case PRIMARY_EXPRESSION: {
-                if(!strcmp(node->children[i]->val->type,"identifier")) {
-                    symbol = node->children[i]->val->v.s;
-                }
-                printf("%s %s\n", op, symbol);
-                printf("ha ");
-                // selection_statement(node->children[i]);
+                if (node->children[i]->val != NULL) {
+                    if(!strcmp(node->children[i]->val->type, "identifier")) {
+                        symbol = node->children[i]->val->v.s;
+                    }
+                } 
+                selection_statement(node->children[i]);
                 break;
             }
         }

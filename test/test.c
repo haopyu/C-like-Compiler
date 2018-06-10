@@ -1,7 +1,7 @@
 int main() {
-    int a = 0;
+    int a = 10;
     if (a == 0) {
-        a = a + 1;
     }
+    float b = 3.5; 
     return 1;
 }

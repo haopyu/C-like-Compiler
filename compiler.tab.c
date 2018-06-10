@@ -540,15 +540,15 @@ static const yytype_uint16 yyrline[] =
      634,   637,   643,   649,   652,   658,   661,   672,   678,   681,
      687,   693,   696,   699,   702,   705,   711,   717,   720,   723,
      726,   732,   735,   741,   744,   747,   750,   753,   756,   762,
-     768,   774,   780,   786,   792,   801,   804,   810,   813,   816,
-     819,   825,   828,   831,   837,   840,   843,   849,   852,   855,
-     858,   861,   867,   870,   873,   879,   882,   888,   891,   897,
-     900,   906,   909,   915,   918,   924,   927,   933,   936,   942,
-     948,   954,   960,   966,   972,   978,   984,   990,   996,  1002,
-    1011,  1014,  1020,  1028,  1031,  1034,  1037,  1040,  1043,  1049,
-    1055,  1058,  1064,  1067,  1073,  1076,  1082,  1085,  1091,  1094,
-    1098,  1101,  1104,  1110,  1113,  1116,  1119,  1125,  1128,  1131,
-    1134,  1137
+     768,   774,   780,   786,   792,   801,   804,   810,   813,   819,
+     825,   834,   837,   843,   852,   855,   861,   870,   873,   879,
+     885,   891,   900,   903,   909,   918,   921,   930,   933,   942,
+     945,   954,   957,   966,   969,   978,   981,   987,   990,   996,
+    1002,  1008,  1014,  1020,  1026,  1032,  1038,  1044,  1050,  1056,
+    1065,  1068,  1074,  1082,  1085,  1088,  1091,  1094,  1097,  1103,
+    1109,  1112,  1118,  1121,  1127,  1130,  1136,  1139,  1145,  1148,
+    1152,  1158,  1164,  1173,  1176,  1179,  1182,  1188,  1191,  1194,
+    1197,  1200
 };
 #endif
 
@@ -3204,628 +3204,691 @@ yyreduce:
   case 158:
 #line 813 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "*";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, MULTIPLICATIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3210 "compiler.tab.c" /* yacc.c:1646  */
+#line 3213 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 159:
-#line 816 "compiler.y" /* yacc.c:1646  */
+#line 819 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "/";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, MULTIPLICATIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3218 "compiler.tab.c" /* yacc.c:1646  */
+#line 3224 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 819 "compiler.y" /* yacc.c:1646  */
+#line 825 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, MULTIPLICATIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "%";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, MULTIPLICATIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3226 "compiler.tab.c" /* yacc.c:1646  */
+#line 3235 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 161:
-#line 825 "compiler.y" /* yacc.c:1646  */
+#line 834 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, ADDITIVE_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3234 "compiler.tab.c" /* yacc.c:1646  */
+#line 3243 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 162:
-#line 828 "compiler.y" /* yacc.c:1646  */
+#line 837 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, ADDITIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "+";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, ADDITIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3242 "compiler.tab.c" /* yacc.c:1646  */
+#line 3254 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 163:
-#line 831 "compiler.y" /* yacc.c:1646  */
+#line 843 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, ADDITIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "-";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, ADDITIVE_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3250 "compiler.tab.c" /* yacc.c:1646  */
+#line 3265 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 837 "compiler.y" /* yacc.c:1646  */
+#line 852 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, SHIFT_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3258 "compiler.tab.c" /* yacc.c:1646  */
+#line 3273 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 165:
-#line 840 "compiler.y" /* yacc.c:1646  */
+#line 855 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, SHIFT_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "<<";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, SHIFT_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3266 "compiler.tab.c" /* yacc.c:1646  */
+#line 3284 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 166:
-#line 843 "compiler.y" /* yacc.c:1646  */
+#line 861 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, SHIFT_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = ">>";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, SHIFT_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3274 "compiler.tab.c" /* yacc.c:1646  */
+#line 3295 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 167:
-#line 849 "compiler.y" /* yacc.c:1646  */
+#line 870 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, RELATIONAL_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3282 "compiler.tab.c" /* yacc.c:1646  */
+#line 3303 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 168:
-#line 852 "compiler.y" /* yacc.c:1646  */
+#line 873 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
-    }
-#line 3290 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 169:
-#line 855 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
-    }
-#line 3298 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 170:
-#line 858 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
-    }
-#line 3306 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 171:
-#line 861 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "<";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
 #line 3314 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
+  case 169:
+#line 879 "compiler.y" /* yacc.c:1646  */
+    {
+        value v;
+        v.v.s = ">";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+    }
+#line 3325 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 170:
+#line 885 "compiler.y" /* yacc.c:1646  */
+    {
+        value v;
+        v.v.s = "<=";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+    }
+#line 3336 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 171:
+#line 891 "compiler.y" /* yacc.c:1646  */
+    {
+        value v;
+        v.v.s = ">=";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, RELATIONAL_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+    }
+#line 3347 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
   case 172:
-#line 867 "compiler.y" /* yacc.c:1646  */
+#line 900 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, EQUALITY_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3322 "compiler.tab.c" /* yacc.c:1646  */
+#line 3355 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 173:
-#line 870 "compiler.y" /* yacc.c:1646  */
+#line 903 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, EQUALITY_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "==";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, EQUALITY_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3330 "compiler.tab.c" /* yacc.c:1646  */
+#line 3366 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 174:
-#line 873 "compiler.y" /* yacc.c:1646  */
+#line 909 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, EQUALITY_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "!=";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, EQUALITY_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3338 "compiler.tab.c" /* yacc.c:1646  */
+#line 3377 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 175:
-#line 879 "compiler.y" /* yacc.c:1646  */
+#line 918 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, AND_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3346 "compiler.tab.c" /* yacc.c:1646  */
+#line 3385 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 176:
-#line 882 "compiler.y" /* yacc.c:1646  */
+#line 921 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, AND_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "&";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, AND_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3354 "compiler.tab.c" /* yacc.c:1646  */
+#line 3396 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 177:
-#line 888 "compiler.y" /* yacc.c:1646  */
+#line 930 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, EXCLUSIVE_OR_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3362 "compiler.tab.c" /* yacc.c:1646  */
+#line 3404 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 891 "compiler.y" /* yacc.c:1646  */
+#line 933 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, EXCLUSIVE_OR_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "^";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, EXCLUSIVE_OR_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3370 "compiler.tab.c" /* yacc.c:1646  */
+#line 3415 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 897 "compiler.y" /* yacc.c:1646  */
+#line 942 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, INCLUSIVE_OR_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3378 "compiler.tab.c" /* yacc.c:1646  */
+#line 3423 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 180:
-#line 900 "compiler.y" /* yacc.c:1646  */
+#line 945 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, INCLUSIVE_OR_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
-    }
-#line 3386 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 181:
-#line 906 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, LOGICAL_AND_EXPRESSION, 1, (yyvsp[0].tree));
-    }
-#line 3394 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 182:
-#line 909 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, LOGICAL_AND_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
-    }
-#line 3402 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 183:
-#line 915 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, LOGICAL_OR_EXPRESSION, 1, (yyvsp[0].tree));
-    }
-#line 3410 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 184:
-#line 918 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, LOGICAL_OR_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
-    }
-#line 3418 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 185:
-#line 924 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, CONDITIONAL_EXPRESSION, 1, (yyvsp[0].tree));
-    }
-#line 3426 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 186:
-#line 927 "compiler.y" /* yacc.c:1646  */
-    {
-        (yyval.tree) = make_node(NULL, CONDITIONAL_EXPRESSION, 2, (yyvsp[-4].tree), (yyvsp[-2].tree));
+        value v;
+        v.v.s = "|";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, INCLUSIVE_OR_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
 #line 3434 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
-  case 187:
-#line 933 "compiler.y" /* yacc.c:1646  */
+  case 181:
+#line 954 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, ASSIGNMENT_EXPRESSION, 1, (yyvsp[0].tree));
+        (yyval.tree) = make_node(NULL, LOGICAL_AND_EXPRESSION, 1, (yyvsp[0].tree));
     }
 #line 3442 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
-  case 188:
-#line 936 "compiler.y" /* yacc.c:1646  */
+  case 182:
+#line 957 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, ASSIGNMENT_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "&&";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, LOGICAL_AND_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3450 "compiler.tab.c" /* yacc.c:1646  */
+#line 3453 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 183:
+#line 966 "compiler.y" /* yacc.c:1646  */
+    {
+        (yyval.tree) = make_node(NULL, LOGICAL_OR_EXPRESSION, 1, (yyvsp[0].tree));
+    }
+#line 3461 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 184:
+#line 969 "compiler.y" /* yacc.c:1646  */
+    {
+        value v;
+        v.v.s = "||";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, LOGICAL_OR_EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+    }
+#line 3472 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 185:
+#line 978 "compiler.y" /* yacc.c:1646  */
+    {
+        (yyval.tree) = make_node(NULL, CONDITIONAL_EXPRESSION, 1, (yyvsp[0].tree));
+    }
+#line 3480 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 186:
+#line 981 "compiler.y" /* yacc.c:1646  */
+    {
+        (yyval.tree) = make_node(NULL, CONDITIONAL_EXPRESSION, 2, (yyvsp[-4].tree), (yyvsp[-2].tree));
+    }
+#line 3488 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 187:
+#line 987 "compiler.y" /* yacc.c:1646  */
+    {
+        (yyval.tree) = make_node(NULL, ASSIGNMENT_EXPRESSION, 1, (yyvsp[0].tree));
+    }
+#line 3496 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 188:
+#line 990 "compiler.y" /* yacc.c:1646  */
+    {
+        (yyval.tree) = make_node(NULL, ASSIGNMENT_EXPRESSION, 3, (yyvsp[-2].tree), (yyvsp[-1].tree), (yyvsp[0].tree));
+    }
+#line 3504 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 942 "compiler.y" /* yacc.c:1646  */
+#line 996 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3461 "compiler.tab.c" /* yacc.c:1646  */
+#line 3515 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 190:
-#line 948 "compiler.y" /* yacc.c:1646  */
+#line 1002 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "*=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3472 "compiler.tab.c" /* yacc.c:1646  */
+#line 3526 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 954 "compiler.y" /* yacc.c:1646  */
+#line 1008 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "/=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3483 "compiler.tab.c" /* yacc.c:1646  */
+#line 3537 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 192:
-#line 960 "compiler.y" /* yacc.c:1646  */
+#line 1014 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "%=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3494 "compiler.tab.c" /* yacc.c:1646  */
+#line 3548 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 193:
-#line 966 "compiler.y" /* yacc.c:1646  */
+#line 1020 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "+=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3505 "compiler.tab.c" /* yacc.c:1646  */
+#line 3559 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 194:
-#line 972 "compiler.y" /* yacc.c:1646  */
+#line 1026 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "-=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3516 "compiler.tab.c" /* yacc.c:1646  */
+#line 3570 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 195:
-#line 978 "compiler.y" /* yacc.c:1646  */
+#line 1032 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "<<=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3527 "compiler.tab.c" /* yacc.c:1646  */
+#line 3581 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 196:
-#line 984 "compiler.y" /* yacc.c:1646  */
+#line 1038 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = ">>=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3538 "compiler.tab.c" /* yacc.c:1646  */
+#line 3592 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 197:
-#line 990 "compiler.y" /* yacc.c:1646  */
+#line 1044 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "&=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3549 "compiler.tab.c" /* yacc.c:1646  */
+#line 3603 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 996 "compiler.y" /* yacc.c:1646  */
+#line 1050 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "^=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3560 "compiler.tab.c" /* yacc.c:1646  */
+#line 3614 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 199:
-#line 1002 "compiler.y" /* yacc.c:1646  */
+#line 1056 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = "|=";
         v.type = "string";
         (yyval.tree) = make_node(&v, POSTFIX_EXPRESSION,0);
     }
-#line 3571 "compiler.tab.c" /* yacc.c:1646  */
+#line 3625 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 200:
-#line 1011 "compiler.y" /* yacc.c:1646  */
+#line 1065 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3579 "compiler.tab.c" /* yacc.c:1646  */
+#line 3633 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 201:
-#line 1014 "compiler.y" /* yacc.c:1646  */
+#line 1068 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, EXPRESSION, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3587 "compiler.tab.c" /* yacc.c:1646  */
+#line 3641 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 202:
-#line 1020 "compiler.y" /* yacc.c:1646  */
+#line 1074 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, CONSTANT_EXPRESSION, 1, (yyvsp[0].tree));
     }
-#line 3595 "compiler.tab.c" /* yacc.c:1646  */
+#line 3649 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 203:
-#line 1028 "compiler.y" /* yacc.c:1646  */
+#line 1082 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3603 "compiler.tab.c" /* yacc.c:1646  */
+#line 3657 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 204:
-#line 1031 "compiler.y" /* yacc.c:1646  */
+#line 1085 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3611 "compiler.tab.c" /* yacc.c:1646  */
+#line 3665 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 205:
-#line 1034 "compiler.y" /* yacc.c:1646  */
+#line 1088 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3619 "compiler.tab.c" /* yacc.c:1646  */
+#line 3673 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 206:
-#line 1037 "compiler.y" /* yacc.c:1646  */
+#line 1091 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3627 "compiler.tab.c" /* yacc.c:1646  */
+#line 3681 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 207:
-#line 1040 "compiler.y" /* yacc.c:1646  */
+#line 1094 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3635 "compiler.tab.c" /* yacc.c:1646  */
+#line 3689 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 208:
-#line 1043 "compiler.y" /* yacc.c:1646  */
+#line 1097 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3643 "compiler.tab.c" /* yacc.c:1646  */
+#line 3697 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 209:
-#line 1049 "compiler.y" /* yacc.c:1646  */
+#line 1103 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = (yyvsp[-2].val_str);
         v.type = "identifier";
         (yyval.tree) = make_node(&v, LABELED_STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3654 "compiler.tab.c" /* yacc.c:1646  */
+#line 3708 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 210:
-#line 1055 "compiler.y" /* yacc.c:1646  */
+#line 1109 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, LABELED_STATEMENT, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3662 "compiler.tab.c" /* yacc.c:1646  */
+#line 3716 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 211:
-#line 1058 "compiler.y" /* yacc.c:1646  */
+#line 1112 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, LABELED_STATEMENT, 1, (yyvsp[0].tree));
     }
-#line 3670 "compiler.tab.c" /* yacc.c:1646  */
+#line 3724 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 212:
-#line 1064 "compiler.y" /* yacc.c:1646  */
+#line 1118 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = NULL;
     }
-#line 3678 "compiler.tab.c" /* yacc.c:1646  */
+#line 3732 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 213:
-#line 1067 "compiler.y" /* yacc.c:1646  */
+#line 1121 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, COMPOUND_STATEMENT, 1, (yyvsp[-1].tree));
     }
-#line 3686 "compiler.tab.c" /* yacc.c:1646  */
+#line 3740 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 214:
-#line 1073 "compiler.y" /* yacc.c:1646  */
+#line 1127 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, BLOCK_ITEM_LIST, 1, (yyvsp[0].tree));
     }
-#line 3694 "compiler.tab.c" /* yacc.c:1646  */
+#line 3748 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 215:
-#line 1076 "compiler.y" /* yacc.c:1646  */
+#line 1130 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, BLOCK_ITEM_LIST, 2, (yyvsp[-1].tree), (yyvsp[0].tree));
     }
-#line 3702 "compiler.tab.c" /* yacc.c:1646  */
+#line 3756 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 216:
-#line 1082 "compiler.y" /* yacc.c:1646  */
+#line 1136 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, BLOCK_ITEM, 1, (yyvsp[0].tree));
     }
-#line 3710 "compiler.tab.c" /* yacc.c:1646  */
+#line 3764 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 217:
-#line 1085 "compiler.y" /* yacc.c:1646  */
+#line 1139 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, BLOCK_ITEM, 1, (yyvsp[0].tree));
     }
-#line 3718 "compiler.tab.c" /* yacc.c:1646  */
+#line 3772 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 218:
-#line 1091 "compiler.y" /* yacc.c:1646  */
+#line 1145 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL,EXPRESSION_STATEMENT, 1, (yyvsp[-1].tree));
     }
-#line 3726 "compiler.tab.c" /* yacc.c:1646  */
+#line 3780 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 220:
-#line 1098 "compiler.y" /* yacc.c:1646  */
+#line 1152 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, SELECTION_STATEMENT, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "if";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, SELECTION_STATEMENT, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3734 "compiler.tab.c" /* yacc.c:1646  */
+#line 3791 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 221:
-#line 1101 "compiler.y" /* yacc.c:1646  */
+#line 1158 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, SELECTION_STATEMENT, 3, (yyvsp[-4].tree), (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "if";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, SELECTION_STATEMENT, 3, (yyvsp[-4].tree), (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3742 "compiler.tab.c" /* yacc.c:1646  */
+#line 3802 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 222:
-#line 1104 "compiler.y" /* yacc.c:1646  */
+#line 1164 "compiler.y" /* yacc.c:1646  */
     {
-        (yyval.tree) = make_node(NULL, SELECTION_STATEMENT, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
+        value v;
+        v.v.s = "switch";
+        v.type = "string";
+        (yyval.tree) = make_node(&v, SELECTION_STATEMENT, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3750 "compiler.tab.c" /* yacc.c:1646  */
+#line 3813 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 223:
-#line 1110 "compiler.y" /* yacc.c:1646  */
+#line 1173 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, ITERATION_STATEMENT, 2, (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3758 "compiler.tab.c" /* yacc.c:1646  */
+#line 3821 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 224:
-#line 1113 "compiler.y" /* yacc.c:1646  */
+#line 1176 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, ITERATION_STATEMENT, 2, (yyvsp[-4].tree), (yyvsp[-1].tree));
     }
-#line 3766 "compiler.tab.c" /* yacc.c:1646  */
+#line 3829 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 225:
-#line 1116 "compiler.y" /* yacc.c:1646  */
+#line 1179 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, ITERATION_STATEMENT, 3, (yyvsp[-3].tree), (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3774 "compiler.tab.c" /* yacc.c:1646  */
+#line 3837 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 226:
-#line 1119 "compiler.y" /* yacc.c:1646  */
+#line 1182 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, ITERATION_STATEMENT, 4, (yyvsp[-4].tree), (yyvsp[-3].tree), (yyvsp[-2].tree), (yyvsp[0].tree));
     }
-#line 3782 "compiler.tab.c" /* yacc.c:1646  */
+#line 3845 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 227:
-#line 1125 "compiler.y" /* yacc.c:1646  */
+#line 1188 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, JUMP_STATEMENT, 0);
     }
-#line 3790 "compiler.tab.c" /* yacc.c:1646  */
+#line 3853 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 228:
-#line 1128 "compiler.y" /* yacc.c:1646  */
+#line 1191 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, JUMP_STATEMENT, 0);
     }
-#line 3798 "compiler.tab.c" /* yacc.c:1646  */
+#line 3861 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 229:
-#line 1131 "compiler.y" /* yacc.c:1646  */
+#line 1194 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, JUMP_STATEMENT, 0);
     }
-#line 3806 "compiler.tab.c" /* yacc.c:1646  */
+#line 3869 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 230:
-#line 1134 "compiler.y" /* yacc.c:1646  */
+#line 1197 "compiler.y" /* yacc.c:1646  */
     {
         (yyval.tree) = make_node(NULL, JUMP_STATEMENT, 1, (yyvsp[-1].tree));
     }
-#line 3814 "compiler.tab.c" /* yacc.c:1646  */
+#line 3877 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 231:
-#line 1137 "compiler.y" /* yacc.c:1646  */
+#line 1200 "compiler.y" /* yacc.c:1646  */
     {
         value v;
         v.v.s = (yyvsp[-1].val_str);
         v.type = "identifier";
         (yyval.tree) = make_node(&v, JUMP_STATEMENT, 0);
     }
-#line 3825 "compiler.tab.c" /* yacc.c:1646  */
+#line 3888 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 3829 "compiler.tab.c" /* yacc.c:1646  */
+#line 3892 "compiler.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -4053,7 +4116,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1146 "compiler.y" /* yacc.c:1906  */
+#line 1209 "compiler.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[])
