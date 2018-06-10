@@ -18,4 +18,4 @@ struct expression {
 void translate(AST* ast);
 void translate_a_node(AST* node);
 void compound_statement(AST* node);
-void selection_sattement(AST* node);
+void selection_statement(AST* node);

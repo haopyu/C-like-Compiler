@@ -110,7 +110,7 @@ void compound_statement(AST* node) {
     }
 }
 
-void selection_sattement(AST* node) {
+void selection_statement(AST* node) {
     int i;
     for (i = 0; i < 4; i++) {
         if (node->children[i] == NULL) continue;
@@ -197,6 +197,8 @@ void selection_sattement(AST* node) {
                 else if (!strcmp(node->children[i]->val->v.s,">=")) {
                     exp.op = ">=";
                 }
+
+                
             }
             
         }
