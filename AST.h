@@ -1,58 +1,121 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <fstream>
-#include <cstdlib>
-#include <cstdio>
-#include <cstdarg>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
 
-using namespace std;
+#define SYM_TAB_SIZE	997
+#define IDENTIFY_LEN	15
+#define IND_OFFSET		2
+#define CHILDREN_NUM	4
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 
 typedef struct abstract_syntax_tree AST;
-typedef struct symbol Symbol;
+typedef union _value_union value_union;
+typedef struct _value value;
+typedef char* String;
 
-enum statement_type {
-    LIST,
-	NUM,
-	STR,
-	SYM,
-	EX_EQ,
-	PLUS_OP,
-	MINUS_OP,
-	MUL_OP,
-	LT_OP,
-	GT_OP,
-	GET_ARRAY_OP,
-	SET_ARRAY_OP,
-	CALL_OP,
-	IF_STATEMENT,
-	BLOCK_STATEMENT,
-	RETURN_STATEMENT,
-	WHILE_STATEMENT,
-	FOR_STATEMENT
+union _value_union {
+	int i;
+	float f;
+	String s;
 };
 
-struct symbol {
-    char *name;
-	int type, pointer;
+struct _value {
+	value_union v;
+	String type;
 };
 
 struct abstract_syntax_tree {
-    statement_type type;
-    int symbol_type;
-    string text;
-    AST *lpNext;// 同一层
-    AST *lpSub;// 子层节点
+	value *val;
+	int node_identifier;
+	int num_of_sons;
+	AST* children[4];
 };
 
+AST* make_node(value *val, int _case, int num_of_sons, ...);
+void print_tree(AST *tree);
+int find_usage(AST *p, String _type[100], int i, String u);
 
-void PrintTree(AST* tree);
-AST* NewNode();
-AST* FatherAddSon(AST* pFather, AST* pSon);
-AST* NewFatherAddSon(statement_type iType, int num_of_sons, ...);
-void FreeTree(AST* root);
-void nm_clear();
-
+enum ParseTreeNodeType {
+	UNARY_OPERATOR,
+	UNARY_EXPRESSION,
+	TYPE_SPECIFIER,
+	TYPE_QUALIFIER_LIST,
+	TYPE_QUALIFIER,
+	TYPE_NAME,
+	TRANSLATION_UNIT,
+	STRUCT_DECLARATOR,
+	STRUCT_DECLARATOR_LIST,
+	SPECIFIER_QUALIFIER_LIST,
+	STRUCT_DECLARATION,
+	STRUCT_DECLARATION_LIST,
+	STRUCT_OR_UNION,
+	STRUCT_OR_UNION_SPECIFIER,
+	STORAGE_CLASS_SPECIFIER,
+	STATEMENT,
+	SHIFT_EXPRESSION,
+	SELECTION_STATEMENT,
+	RELATIONAL_EXPRESSION,
+	PROGRAM,
+	PRIMARY_EXPRESSION,
+	POSTFIX_EXPRESSION,
+	POINTER,
+	PARAMETER_DECLARATION,
+	PARAMETER_LIST,
+	PARAMETER_TYPE_LIST,
+	MULTIPLICATIVE_EXPRESSION,
+	LOGICAL_OR_EXPRESSION,
+	LOGICAL_AND_EXPRESSION,
+	LABELED_STATEMENT,
+	JUMP_STATEMENT,
+	ITERATION_STATEMENT,
+	INITIALIZER_LIST,
+	INITIALIZER,
+	INIT_DECLARATOR,
+	INIT_DECLARATOR_LIST,
+	INCLUSIVE_OR_EXPRESSION,
+	IDENTIFIER_LIST,
+	FUNCTION_SPECIFIER,
+	FUNCTION_DEFINITION,
+	EXTERNAL_DECLARATION,
+	EXPRESSION_STATEMENT,
+	EXPRESSION,
+	EXCLUSIVE_OR_EXPRESSION,
+	EQUALITY_EXPRESSION,
+	ENUMERATOR,
+	ENUMERATOR_LIST,
+	ENUM_SPECIFIER,
+	DIRECT_ABSTRACT_DECLARATOR,
+	DIRECT_DECLARATOR,
+	DESIGNATOR,
+	DESIGNATOR_LIST,
+	DESIGNATION,
+	DECLARATION_LIST,
+	DECLARATOR,
+	DECLARATION_SPECIFIERS,
+	DECLARATION,
+	CONSTANT_EXPRESSION,
+	CONSTANT,
+	CONDITIONAL_EXPRESSION,
+	COMPOUND_STATEMENT,
+	CAST_EXPRESSION,
+	BLOCK_ITEM,
+	BLOCK_ITEM_LIST,
+	ASSIGNMENT_OPERATOR,
+	ASSIGNMENT_EXPRESSION,
+	ARGUMENT_EXPRESSION_LIST,
+	AND_EXPRESSION,
+	ADDITIVE_EXPRESSION,
+	ABSTRACT_DECLARATOR,
+	ERROR
+};

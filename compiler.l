@@ -1,14 +1,21 @@
 %{
+	#include "AST.h"
+	#include "symbol_table.h"
     #include "compiler.tab.h"
-    extern yyerror(const char *s); 
+    extern int yyerror(const char *s); 
     int yywrap(void);  
     int yylex(void);
+	void annotation();
+	extern int symbol_type(char *name);
+	int check_type();
 %}
 
 %option yylineno
 
 INT_SUF                    (((u|U)(l|L|ll|LL)?)|((l|L|ll|LL)(u|U)?))
 FLOAT_SUF                  (f|F|l|L)
+CHA_PRF                    (u8|u|U|L)
+ES                         (\\(['"\?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F0-9]+))
 STR_PRF                    (u8|u|U|L)
 EXP                        [eE][+-]?[0-9]+ 
 
@@ -53,23 +60,24 @@ EXP                        [eE][+-]?[0-9]+
 "while"					   { return WHILE; }
 "_Bool"					   { yylval.type = BOOL; return BOOL; }
 
-[1-9][0-9]*{INT_SUF}?             { sscanf(yytext, "%s", yylval.val); return INT_CONST; /* decimal */ }
-0[xX][a-fA-F0-9]+{INT_SUF}?       { sscanf(yytext, "%s", yylval.val); return INT_CONST; /* hexadecimal */ }
-0[0-7]*{INT_SUF}?                 { sscanf(yytext, "%s", yylval.val); return INT_CONST; /* octal */ }
+[1-9][0-9]*{INT_SUF}?             { yylval.val_int = atoi(yytext); return INT_CONST; /* decimal */ }
+0[xX][a-fA-F0-9]+{INT_SUF}?       { yylval.val_int = atoi(yytext); return INT_CONST; /* hexadecimal */ }
+0[0-7]*{INT_SUF}?                 { yylval.val_int = atoi(yytext); return INT_CONST; /* octal */ }
+{CHA_PRF}?"'"([^'\\\n]|{ES})+"'"  { yylval.val_int = atoi(yytext); return INT_CONST; /* char */ }
 
-[0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { sscanf(yytext, "%s", yylval.val); return FLOAT_CONST; }
-[0-9]+[.]{EXP}?{FLOAT_SUF}?       { sscanf(yytext, "%s", yylval.val);; return FLOAT_CONST; }
-[0-9]+{EXP}{FLOAT_SUF}?           { sscanf(yytext, "%s", yylval.val); return FLOAT_CONST; }
+[0-9]*[.][0-9]+{EXP}?{FLOAT_SUF}? { yylval.val_float = atof(yytext); return FLOAT_CONST; }
+[0-9]+[.]{EXP}?{FLOAT_SUF}?       { yylval.val_float = atof(yytext); return FLOAT_CONST; }
+[0-9]+{EXP}{FLOAT_SUF}?           { yylval.val_float = atof(yytext); return FLOAT_CONST; }
 
-[a-zA-Z_][0-9a-zA-Z_]*            { sscanf(yytext, "%s", yylval.val); return IDENTIFIER; }
-({STR_PRF}?\"[^"\\\n]*\")+        { sscanf(yytext, "%s", yylval.val); return STRING; }
+[a-zA-Z_][0-9a-zA-Z_]*            { yylval.val_str = strdup(yytext); return check_type(); }
+({STR_PRF}?\"[^"\\\n]*\")+        { yylval.val_str = strdup(yytext); return STRING; }
 
-
+"..."					   { return ELLIPSIS; }
 "+"                        { return ADD; }
 "-"                        { return SUB; }
 "*"                        { return MUL; }
 "/"                        { return DIV; }
-"^"                        { return POWER; }
+"^"                        { return BIT_XOR; }
 "("                        { return LPAREN; }
 ")"                        { return RPAREN; }
 ";"                        { return SEMICOLON;}
@@ -99,8 +107,8 @@ EXP                        [eE][+-]?[0-9]+
 ","					       { return COMMA; }
 ":"					       { return COLON; }
 "="					       { return ASSIGN; }
-("["|"<:")				   { return LBRACKET; }
-("]"|":>")				   { return RBRACKET; }
+"["|"<:"				   { return LBRACKET; }
+"]"|":>"				   { return RBRACKET; }
 "."				       	   { return DOT; }
 "&"					       { return BIT_AND; }
 "!"					       { return NOT; }
@@ -129,4 +137,13 @@ void annotation() {
 		}
 	}
 	yyerror("Unclosed annotation!\n");
+}
+
+int check_type() {
+	if (symbol_type(yytext)) {
+		return TYPEDEF_NAME;
+	}
+	else {
+		return IDENTIFIER;
+	}
 }
